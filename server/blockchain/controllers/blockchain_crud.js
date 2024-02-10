@@ -11,7 +11,7 @@ const contractAddress = process.env.CONTRACT_ADDRESS;
 const provider = new providers.JsonRpcProvider(API_URL);
 const signer = new ethers.Wallet(PRIVATE_KEY, provider);
 
-const isDM = true;
+const isDM = false;
 const url = "https://c4f0-49-248-167-18.ngrok-free.app/api";
 
 const {
@@ -172,33 +172,35 @@ const updateToAComplaint = async (req, res) => {
   }
 };
 
-const getComplaintByComplaintType = async(req, res) => {
-  try{
-    const {complaintType} = req.body;
+const getComplaintByComplaintType = async (req, res) => {
+  try {
+    const { complaintType } = req.body;
 
-    const tx = await contractInstance.getComplaintsByComplaintType(complaintType);
+    const tx = await contractInstance.getComplaintsByComplaintType(
+      complaintType
+    );
     // const receipt = await tx.wait();
 
     res.status(200).json(tx);
-
-  }catch(err){
+  } catch (err) {
     res.status(500).send("Get Complaint By Complaint Type Error\n", err);
   }
-}
+};
 
-const getComplaintByAuthorityName = async(req, res) => {
-  try{
-    const {authorityName} = req.body;
+const getComplaintByAuthorityName = async (req, res) => {
+  try {
+    const { authorityName } = req.body;
 
-    const tx = await contractInstance.getComplaintsByAuthorityName(complaintType);
+    const tx = await contractInstance.getComplaintsByAuthorityName(
+      complaintType
+    );
     // const receipt = await tx.wait();
 
     res.status(200).json(tx);
-
-  }catch(err){
+  } catch (err) {
     res.status(500).send("Get Complaint By Authority Name Error\n", err);
   }
-}
+};
 
 module.exports = {
   newComplaint,

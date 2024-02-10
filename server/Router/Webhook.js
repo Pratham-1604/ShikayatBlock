@@ -14,7 +14,7 @@ const mfile =
 // const User = require("../models/Schema");
 const User = require("../models/UserSchema");
 
-const isDM = true;
+const isDM = false;
 
 const handleIngestForm = (req, res) => {
   const formData = FormData();
@@ -27,13 +27,52 @@ const handleComplaintRegistered = (req, res) => {
 };
 
 const handleComplaintCreated = async (req, res) => {
-  const data = req.body;
+  let data = req.body;
+  if (isDM) {
+    data = {
+      event_id: "eg_1",
+      event_type: "new_complaint_added",
+      user_id: "65c772a2b24737ce78451b52",
+      tx_hash: "txHash",
+      sender_address: "receipt.sender_address",
+      complaint_title: "title",
+      complaint_id: "finalId",
+      event_created_date: " 2017-01-01 14:56:00",
+      complaint_updated_at: " 2017-01-02 14:56:00",
+      complaint_status: " open",
+      complaint_type: " complaint",
+      complaint_created_by: " user_id",
+      reporting_agency: " police",
+      complaint_documents: "<url of marksheet or the actual marksheet>",
+      agency_documents: "<optional field if agency responds with a document>",
+      complaint_description:
+        " My original copy of marksheet has been lost. I want a new one.",
+      complaint_created_date: " 2017-01-01 14:58:00",
+      agency_response:
+        "We are verifying your details. A department official will contact you shortly.",
+      group_complaint_id: "test",
+      complaint_id: "fetre",
+    };
+  }
+  let group_complaint_id = data.group_complaint_id;
+  let complaint_id = data.complaint_id;
 
   const user = await User.findById(data.user_id);
   // console.log("user", user);
   if (!("events" in user)) {
     user.events = [];
   }
+  if (!("complaints" in user)) {
+    user.complaints = {};
+  }
+
+  if (!(group_complaint_id in user.complaints)) {
+    user.complaints[group_complaint_id] = [];
+  }
+
+  user.complaints[group_complaint_id].push(complaint_id);
+  console.log("user group_complaint_id");
+
   user.events.push(data);
   user.save();
   console.log("complaint_created");
