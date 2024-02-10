@@ -6,11 +6,15 @@ const app = express();
 const bodyParser = require("body-parser");
 app.use(cors());
 const multer = require("multer");
-const socketIo = require("socket.io");
 const server = require("http").createServer(app);
 const { Server: WebSocketServer } = require("ws");
+// const {}
 
-const io = new WebSocketServer({ server });
+const wsServer = new WebSocketServer({ server });
+// io.clients
+const { initSocket } = require("./util");
+
+initSocket(wsServer);
 
 require("./db/Conn");
 const User = require("./models/UserSchema");
@@ -70,6 +74,7 @@ baseR.use("/explore", require("./Router/Block"));
 app.use("/auth", require("./Router/Auth"));
 baseR.use("/market", require("./Router/Market"));
 baseR.use("/complaint", require("./Router/Complaint"));
+baseR.use("/webhook", require("./Router/Webhook"));
 
 // app.use("/fixed_label", (req, res, next) => {
 //   // Allow requests from any origin
@@ -94,20 +99,24 @@ baseR.use("/complaint", require("./Router/Complaint"));
 
 const PORT = 5000;
 // const io = socketIo(server);
+// const connections = [];
 
-io.on("connection", (socket) => {
-  console.log("A client connected");
+// io.on("connection", (socket) => {
+//   connections.push(socket);
+//   console.log("connections", connections.length);
 
-  // Simulating data emitting every second
-  // setInterval(() => {
-  //   const data = Math.random() * 100; // Generate random data
-  //   socket.send("data", data);
-  // }, 1000);
+//   console.log("A client connected");
 
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
-});
+//   // Simulating data emitting every second
+//   // setInterval(() => {
+//   //   const data = Math.random() * 100; // Generate random data
+//   //   socket.send("data", data);
+//   // }, 1000);
+
+//   socket.on("disconnect", () => {
+//     console.log("Client disconnected");
+//   });
+// });
 
 // app.listen(PORT, () => {
 //   // console.clear()
@@ -119,4 +128,23 @@ server.listen(5000, () => {
   console.log(`Server@http://localhost:${PORT}`);
 });
 
-exports.io = io;
+// exports.io = io;
+// exports.connections = connections;
+
+// const clients = [];
+// wsServer.on("connection", (ws) => {
+//   // ws.send("Welcome to the websocket server");
+//   setInterval(() => {
+//     ws.send(JSON.stringify({ type: "message", data: "Hello from server" }));
+//   }, 1000);
+//   clients.push(ws);
+//   console.log("Client connected");
+//   clients.forEach((client) => {
+//     client.send(JSON.stringify({ type: "message", data: "Hello from server" }));
+//   });
+
+//   ws.on("close", () => {
+//     clients = clients.filter((client) => client !== ws);
+//     console.log("Client disconnected");
+//   });
+// });
