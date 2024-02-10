@@ -64,7 +64,7 @@ app.use(
 baseR.use("/explore", require("./Router/Block"));
 app.use("/auth", require("./Router/Auth"));
 baseR.use("/market", require("./Router/Market"));
-baseR.use("/complaint", require("./Router/Complaint"));
+baseR.use("/complaint", auth, require("./Router/Complaint"));
 baseR.use("/webhook", require("./Router/Webhook"));
 
 // app.use("/fixed_label", (req, res, next) => {

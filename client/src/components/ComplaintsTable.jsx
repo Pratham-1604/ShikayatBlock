@@ -7,7 +7,14 @@ import {
   Th,
   Td,
   ChakraProvider,
+  Box,
+  Heading,
 } from "@chakra-ui/react";
+import {
+  CalendarIcon,
+  ChevronRightIcon,
+  LocationMarkerIcon,
+} from "@chakra-ui/icons";
 
 const data = [
   {
@@ -111,48 +118,102 @@ const data = [
     status: "Unassigned",
   },
 ];
+const positions = [
+  {
+    id: 1,
+    title: "Back End Developer",
+    type: "Full-time",
+    location: "Remote",
+    department: "Engineering",
+    closeDate: "2020-01-07",
+    closeDateFull: "January 7, 2020",
+  },
+  {
+    id: 2,
+    title: "Front End Developer",
+    type: "Full-time",
+    location: "Remote",
+    department: "Engineering",
+    closeDate: "2020-01-07",
+    closeDateFull: "January 7, 2020",
+  },
+  {
+    id: 3,
+    title: "User Interface Designer",
+    type: "Full-time",
+    location: "Remote",
+    department: "Design",
+    closeDate: "2020-01-14",
+    closeDateFull: "January 14, 2020",
+  },
+];
 
 const ComplainsTable = () => {
+  const onButtonClick = () => {
+    console.log(data);
+  };
   return (
     <ChakraProvider>
-      <Table variant="striped" colorScheme="blue">
-        <Thead color="white" bg="#0262AF">
-          <Tr>
-            <Th color="white">Category</Th>
-            <Th color="white">Date/Time</Th>
-            <Th color="white">Suspect Account Type</Th>
-            <Th color="white">Suspect Account Link</Th>
-            <Th color="white">Suspect Wallet Address</Th>
-            <Th color="white">Transaction ID</Th>
-            <Th color="white">Other Details</Th>
-            {/* <Th>Case Status</Th> */}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {data.map((entry, index) => (
-            <Tr key={index}>
-              <Td>{entry.category}</Td>
-              <Td>{entry.dateTime}</Td>
-              <Td>{entry.suspectAccountType}</Td>
-              <Td>{entry.suspectAccountLink}</Td>
-              {/* <Td>{entry.suspectWalletAddress}</Td> */}
-              <Td>
-                <a
-                  href={`/boards/${entry.suspectWalletAddress}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className= "underline"
-                >
-                  {entry.suspectWalletAddress}
+      <Box p={8}>
+        <Heading mb={4}>Your Complaints</Heading>
+
+        <div className="bg-white shadow overflow-hidden sm:rounded-md">
+          <ul role="list" className="divide-y divide-gray-200">
+            {positions.map((position) => (
+              <li key={position.id}>
+                <a href="#" className="block hover:bg-gray-50">
+                  <div className="px-4 py-4 sm:px-6">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center ">
+                        <p className="text-2xl font-medium text-[#0262AF] truncate">
+                          {position.title}
+                        </p>
+                        <div className="ml-2 flex-shrink-0 flex">
+                          <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                            {position.type}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                        {/* <CalendarIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <p>
+                      Closing on <time dateTime={position.closeDate}>{position.closeDateFull}</time>
+                    </p> */}
+                        <button
+                          type="button"
+                          className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                          onClick={onButtonClick}
+                        >
+                          View Complaint
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="mt-2 sm:flex sm:justify-between">
+                      <div className="sm:flex">
+                        <p className="flex items-center text-sm text-gray-500">
+                          <CalendarIcon
+                            className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          {position.department}
+                        </p>
+                        <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
+                          <CalendarIcon
+                            className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          {position.location}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </a>
-              </Td>
-              <Td>{entry.transactionId}</Td>
-              <Td>{entry.otherDetails}</Td>
-              {/* <Td>{entry.status}</Td> */}
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Box>
     </ChakraProvider>
   );
 };

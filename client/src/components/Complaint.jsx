@@ -17,6 +17,7 @@ import * as Yup from "yup";
 import APIRequests from "../api";
 import { Progress } from "@chakra-ui/progress";
 import ImageUpload from "./csi_hack_components/ImageUpload";
+import { useNavigate } from "react-router-dom";
 
 const ComplaintForm = () => {
   const [authority, setAuthority] = useState(null);
@@ -61,6 +62,7 @@ const ComplaintForm = () => {
   };
 
   const toast = useToast();
+  const navigate = useNavigate();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [file, setFile] = useState(null);
@@ -101,7 +103,7 @@ const ComplaintForm = () => {
   });
 
   const onSubmit = async (values) => {
-    // console.log(values)
+    console.log(values);
     const body = {
       complaint_title: values.complaint_title,
       complaint_description: values.complaint_description,
@@ -142,7 +144,12 @@ const ComplaintForm = () => {
         duration: 3000,
         isClosable: true,
       });
+      let isDM = true;
+      if (isDM) {
+        return;
+      }
       onClose();
+      navigate(`/complaints`);
     } else {
       toast({
         title: "Form upload failed.",
@@ -180,6 +187,7 @@ const ComplaintForm = () => {
               <FormControl
                 id="complaint_description"
                 mb={4}
+                // name="complaint_description"
                 isInvalid={
                   errors.complaint_description && touched.complaint_description
                 }
@@ -189,12 +197,17 @@ const ComplaintForm = () => {
                   as={Input}
                   name="complaint_description"
                   type="text"
+<<<<<<< HEAD
                   onChange={(e) => {
                     handleChange(e);
                     handleComplaintDescriptionChange(e);
                   }}
                   // onBlur={handleComplaintDescriptionChange}
                 ></Field>
+=======
+                ></Field>
+                {/* <Textarea as={Input} name="complaint_description" /> */}
+>>>>>>> prats
               </FormControl>
 
               {false ? (
