@@ -21,56 +21,42 @@ const contractInstance = new ethers.Contract(contractAddress, abi, signer);
 
 const newComplaint = async (req, res) => {
   try {
-    const { userId, subject, description, ipfs } = req.body;
-    if (isDM) {
-      console.log("faking ");
-      let obj = {
-        event_id: "eg_1",
-        event_type: "new_complaint_added",
-        user_id: "65c772a2b24737ce78451b52",
-
-        event_created_date: " 2017-01-01 14:56:00",
-        complaint_updated_at: " 2017-01-02 14:56:00",
-        complaint_status: " open",
-        complaint_type: " complaint",
-        complaint_created_by: " user_id",
-        reporting_agency: " police",
-        complaint_documents: "<url of marksheet or the actual marksheet>",
-        agency_documents: "<optional field if agency responds with a document>",
-        complaint_title: "Lost Original Marsheet",
-        complaint_description:
-          " My original copy of marksheet has been lost. I want a new one.",
-        complaint_created_date: " 2017-01-01 14:58:00",
-        agency_response:
-          "We are verifying your details.  A department official will contact you shortly.",
-      };
-
-      if (isDM) {
-        axios
-          .post(url + "/webhook", obj)
-          .then((response) => {
-            console.log("Response:", response.status);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      }
-      res.send("tst");
-      return;
-    }
+    const {
+      userId,
+      subject,
+      description,
+      ipfs,
+      status,
+      complaintType,
+      statusType,
+      authorityName,
+      priority,
+    } = req.body;
     // working with hardcoded, not workin with this
     const tx = await contractInstance.submitComplaint(
       userId,
       subject,
       description,
-      ipfs
+      complaintType,
+      ipfs,
+      "11-12-2024",
+      status,
+      statusType,
+      authorityName,
+      priority
     );
     const receipt = await tx.wait();
     const txHash = receipt.transactionHash;
+    const getId = await contractInstance.getLatestComplaintId();
+    const finalId = parseInt(getId);
     const obj = {
       event_id: "eg_1",
       event_type: "new_complaint_added",
       user_id: userId,
+      tx_hash: txHash,
+      sender_address: receipt.sender_address,
+      complaint_title: subject,
+      complaint_id: finalId,
       event_created_date: " 2017-01-01 14:56:00",
       complaint_updated_at: " 2017-01-02 14:56:00",
       complaint_status: " open",
@@ -87,14 +73,14 @@ const newComplaint = async (req, res) => {
         "We are verifying your details. A department official will contact you shortly.",
     };
 
-    // axios
-    //   .post(url + "/webhook", obj)
-    //   .then((response) => {
-    //     console.log("Response:", response.status);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error:", error);
-    //   });
+    axios
+      .post(url + "/webhook", obj)
+      .then((response) => {
+        console.log("Response:", response.status);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
     console.log("done");
     res.status(200).json({ success: true, tx: txHash });
   } catch (error) {
@@ -109,7 +95,23 @@ const getComplaintDetail = async (req, res) => {
     // const getId = await contractInstance.getLatestComplaintId();
     // const finalId = parseInt(getId);
     // console.log(finalId);
-    res.status(200).json(complaint);
+    console.log(complaint);
+    const formattedObject = {
+      userId: complaint[0],
+      complaintGroupId: complaint[1].hex,
+      subject: complaint[2],
+      description: complaint[3],
+      complaintType: complaint[4],
+      ipfs: complaint[5],
+      authorityName: complaint[6],
+      date: complaint[7],
+      status: complaint[8],
+      statusType: complaint[9],
+      priority: parseInt(complaint[10]),
+    };
+
+    console.log(formattedObject);
+    res.status(200).json(formattedObject);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -118,23 +120,42 @@ const getComplaintDetail = async (req, res) => {
 const updateToAComplaint = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const { userId, subject, description } = req.body;
+    const {
+      userId,
+      subject,
+      description,
+      ipfs,
+      status,
+      complaintType,
+      statusType,
+      authorityName,
+      priority,
+    } = req.body;
     const tx = await contractInstance.updateComplaint(
       userId,
       id,
       subject,
-      description
+      description,
+      complaintType,
+      ipfs,
+      status,
+      statusType,
+      authorityName,
+      priority
     );
     const receipt = await tx.wait();
-    // const getId = await contractInstance.getLatestComplaintId();
-    // const finalId = parseInt(getId);
-
+    const txHash = receipt.transactionHash;
+    const getId = await contractInstance.getLatestComplaintId();
+    const finalId = parseInt(getId);
     const obj = {
       event_id: "eg_1",
-      event_type: "complaint_update",
+      event_type: "complaint_updated",
       user_id: userId,
-      latest_complaint_id: finalId,
-      complaint_group_id: id,
+      tx_hash: txHash,
+      sender_address: receipt.sender_address,
+      complaint_title: title,
+      complaint_id: finalId,
+      group_complaint_id: id,
       event_created_date: " 2017-01-01 14:56:00",
       complaint_updated_at: " 2017-01-02 14:56:00",
       complaint_status: " open",
@@ -151,22 +172,16 @@ const updateToAComplaint = async (req, res) => {
         "We are verifying your details. A department official will contact you shortly.",
     };
     const url = "https://c4f0-49-248-167-18.ngrok-free.app/api";
-
     axios
       .post(url + "/webhook", obj)
       .then((response) => {
-        console.log("Response:", response.data);
+        console.log("Response:", response.status);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
-
-    // console.log(getId);
-    res.status(200).json({
-      success: true,
-      txHash: receipt.transactionHash,
-      // getId: finalId,
-    });
+    console.log("done");
+    res.status(200).json({ success: true, tx: txHash });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -179,9 +194,10 @@ const getComplaintByComplaintType = async (req, res) => {
     const tx = await contractInstance.getComplaintsByComplaintType(
       complaintType
     );
-    // const receipt = await tx.wait();
 
-    res.status(200).json(tx);
+    const hexList = array.map((item) => parseInt(item.hex));
+
+    res.status(200).json(hexList);
   } catch (err) {
     res.status(500).send("Get Complaint By Complaint Type Error\n", err);
   }
@@ -192,7 +208,7 @@ const getComplaintByAuthorityName = async (req, res) => {
     const { authorityName } = req.body;
 
     const tx = await contractInstance.getComplaintsByAuthorityName(
-      complaintType
+      authorityName
     );
     // const receipt = await tx.wait();
 
@@ -206,4 +222,6 @@ module.exports = {
   newComplaint,
   getComplaintDetail,
   updateToAComplaint,
+  getComplaintByAuthorityName,
+  getComplaintByComplaintType,
 };
