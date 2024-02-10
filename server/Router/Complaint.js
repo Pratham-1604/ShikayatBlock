@@ -11,7 +11,10 @@ const moralisKey = process.env.MORALIS_KEY;
 const saveFile = require("./Utils");
 const axios = require("axios");
 
-const { getAuthorityFromComplaint } = require("../utils/utils");
+const {
+  getAuthorityFromComplaint,
+  getPriorityFromComplaint,
+} = require("../utils/utils");
 
 // const storage2 = multer.diskStorage({
 //   destination: "uploads/",
@@ -73,8 +76,12 @@ const { getAuthorityFromComplaint } = require("../utils/utils");
 //   }
 // };
 
+const isDM = true;
+
 complaintR.post("/create", upload.single("file"), async (req, res) => {
-  const { complaint_title, complaint_description } = req.body;
+  const { complaint_title, complaint_description, authority } = req.body;
+  const priority = await getPriorityFromComplaint(complaint_description);
+ 
   // console.log(req.body);
   // console.log(req.file);
   // console.log("ComplaintRouter");
@@ -108,6 +115,8 @@ complaintR.post("/create", upload.single("file"), async (req, res) => {
         subject: complaint_title,
         description: complaint_description,
         ipfs: storedhash,
+        priority: priority,
+        authority: authority,
       }
     );
     if (response.status === 200) {

@@ -55,7 +55,7 @@ const ComplaintForm = () => {
       authorityNameTimeout = setTimeout(() => {
         getAuthorityName(value, active);
         // setLoading(false);
-      }, 1000);
+      }, 3000);
     } else {
       setAuthority(null);
     }
@@ -118,7 +118,7 @@ const ComplaintForm = () => {
     formData.append("complaint_title", values.complaint_title);
     formData.append("complaint_description", values.complaint_description);
     formData.append("complaint_type", values.complaint_type);
-    formData.append("authority", values.authority);
+    formData.append("authority", authority);
     // formData.append('file', file)
     // Append the file with a unique name ('file' in this case)
     // formData.append('complaint_documents', file);

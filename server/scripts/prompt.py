@@ -40,7 +40,7 @@ authorities_resolving_complaints = [
     "National Commission for Protection of Child Rights (NCPCR)",
     "National Green Tribunal (NGT)",
     "State Pollution Control Board (SPCB)",
-    "Public Works Department (PWD)", 
+    "Public Works Department (PWD)",
     "National Commission for Minorities (NCM)",
     "National Commission for Scheduled Castes (NCSC)",
     "National Commission for Scheduled Tribes (NCST)",
@@ -62,9 +62,25 @@ def get_complaint_resolver_authority_from_complaint_description(complaint_descri
     return response.result
 
 
+def get_priority_of_the_complaint(complaint_description):
+    response = palm.generate_text(
+        **defaults,
+        prompt=f"I am a citizen of India. I have a complaint: {complaint_description}. What is the priority of this complaint? Only answer a digit from 1 to 3. 1 being the highest priority and 3 being the lowest priority. If you think the complaint is not a priority, type 1. If life threats and financial scams the priority should be high. If criminal offences which are not life threatening but still require attention, mark it as 2. If these are not very critical complaints, the priority should be 3",
+    )
+
+    return response.result
+
+
 isDM = False
 
 if __name__ == "__main__":
     import sys
 
-    print(get_complaint_resolver_authority_from_complaint_description(sys.argv[1]))
+    if sys.argv[1] == "get_priority":
+        priority = get_priority_of_the_complaint(sys.argv[2])
+        if priority and priority.isdigit():
+            print(priority)
+        else:
+            print(3)
+    else:
+        print(get_complaint_resolver_authority_from_complaint_description(sys.argv[1]))
