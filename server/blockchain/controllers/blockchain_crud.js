@@ -92,6 +92,7 @@ const getComplaintDetail = async (req, res) => {
     // const getId = await contractInstance.getLatestComplaintId();
     // const finalId = parseInt(getId);
     // console.log(finalId);
+    console.log(complaint);
     const formattedObject = {
       userId: complaint[0],
       complaintGroupId: complaint[1].hex,
@@ -103,7 +104,7 @@ const getComplaintDetail = async (req, res) => {
       date: complaint[7],
       status: complaint[8],
       statusType: complaint[9],
-      priority: complaint[10].hex,
+      priority: parseInt(complaint[10]),
     };
 
     console.log(formattedObject);
@@ -190,25 +191,10 @@ const getComplaintByComplaintType = async (req, res) => {
     const tx = await contractInstance.getComplaintsByComplaintType(
       complaintType
     );
-    // const receipt = await tx.wait();
 
-    // const formattedObject = {
-    //   userId: array[0],
-    //   complaintGroupId: array[1].hex,
-    //   subject: array[2],
-    //   description: array[3],
-    //   complaintType: array[4],
-    //   ipfs: array[5],
-    //   authorityName: array[6],
-    //   date: array[7],
-    //   status: array[8],
-    //   statusType: array[9],
-    //   priority: array[10].hex
-    // };
+    const hexList = array.map((item) => parseInt(item.hex));
 
-    // console.log(formattedObject);
-
-    res.status(200).json(tx);
+    res.status(200).json(hexList);
   } catch (err) {
     res.status(500).send("Get Complaint By Complaint Type Error\n", err);
   }

@@ -17,9 +17,9 @@ router.get("/getComplaintDetail/:id", getComplaintDetail);
 router.put("/updateToAComplaints/:id", updateToAComplaint);
 
 // Endpoint to get filtered by authority name
-router.post("filterByAuthorityName", getComplaintByAuthorityName);
+router.post("/filterByAuthorityName", getComplaintByAuthorityName);
 
 // Endpoint to get filtered by complaint type
-router.post("filterByComplaintType", getComplaintByComplaintType);
+router.post("/filterByComplaintType", getComplaintByComplaintType);
 
 module.exports = router;
