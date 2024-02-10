@@ -152,6 +152,7 @@ async function sendEmail(toEmail) {
     subject: "OTP for Verification", // Subject line
     text: `Your OTP for verification is: ${otp}`, // plain text body
   });
+  console.log("otp is", otp);
 
   console.log(`Message sent: ${info.messageId}`);
 }
