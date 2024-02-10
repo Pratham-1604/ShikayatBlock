@@ -17,6 +17,8 @@ import Monitoring from "./components/Monitoring/Monitoring";
 import ComplaintForm from "./components/Complaint";
 import Blogs from "./Blogs";
 import ComplainsTable from "./components/ComplaintsTable";
+import AdminComplaint from "./components/csi_hack_components/AdminComplaint";
+import AdminInnerComplaint from "./components/csi_hack_components/AdminInnerComplaint";
 
 const App = () => {
   const graphData = generateRandomGraphData();
@@ -49,6 +51,8 @@ const App = () => {
 
           <Route path="/complaint" element={<ComplaintForm />} />
           <Route path="/complaints" element={<ComplainsTable />} />
+          <Route path="/admin/complaints" element={<AdminComplaint />} />
+          <Route path="/admin/complaints/:complaint_id" element={<AdminInnerComplaint />} />
 
           <Route path="/blogs" element={<Blogs />} />
         </Routes>
