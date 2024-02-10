@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 
 const MyComplaints = () => {
   const [data, setData] = useState(null);
+  const user_id = "123";
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:5000");
+    const socket = new WebSocket(`ws://localhost:5000/?user_id=${user_id}`);
     socket.onopen = () => {
       console.log("Connected to server");
       socket.send(JSON.stringify({ type: "getMyComplaints" }));
