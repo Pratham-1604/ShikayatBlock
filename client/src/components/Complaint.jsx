@@ -47,7 +47,7 @@ const ComplaintForm = () => {
   const handleComplaintDescriptionChange = (e) => {
     const { value } = e.target;
     console.log("from form", value);
-    if (value.length > 5 || true) {
+    if (value.length > 5) {
       setLoading(true);
       if (authorityNameTimeout) {
         clearTimeout(authorityNameTimeout);
@@ -172,7 +172,7 @@ const ComplaintForm = () => {
           // validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
-          {({ errors, touched, handleChange }) => (
+          {({ errors, touched, handleChange, values }) => (
             <Form>
               <FormControl
                 id="complaint_title"
@@ -197,17 +197,12 @@ const ComplaintForm = () => {
                   as={Input}
                   name="complaint_description"
                   type="text"
-<<<<<<< HEAD
                   onChange={(e) => {
                     handleChange(e);
                     handleComplaintDescriptionChange(e);
                   }}
                   // onBlur={handleComplaintDescriptionChange}
                 ></Field>
-=======
-                ></Field>
-                {/* <Textarea as={Input} name="complaint_description" /> */}
->>>>>>> prats
               </FormControl>
 
               {false ? (
@@ -225,7 +220,13 @@ const ComplaintForm = () => {
                     as={Input}
                     name="authority"
                     type="text"
-                    value={loading ? "Loading..." : authority}
+                    value={
+                      loading
+                        ? "Loading..."
+                        : values.complaint_description == ""
+                        ? ""
+                        : authority
+                    }
                     // readOnly
                   />
                 </FormControl>
