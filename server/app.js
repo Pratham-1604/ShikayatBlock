@@ -6,6 +6,11 @@ const app = express();
 const bodyParser = require("body-parser");
 app.use(cors());
 const multer = require("multer");
+const socketIo = require("socket.io");
+const server = require("http").createServer(app);
+const { Server: WebSocketServer } = require("ws");
+
+const io = new WebSocketServer({ server });
 
 require("./db/Conn");
 const User = require("./models/UserSchema");
@@ -88,7 +93,30 @@ baseR.use("/complaint", require("./Router/Complaint"));
 // });
 
 const PORT = 5000;
-app.listen(PORT, () => {
-  // console.clear()
+// const io = socketIo(server);
+
+io.on("connection", (socket) => {
+  console.log("A client connected");
+
+  // Simulating data emitting every second
+  // setInterval(() => {
+  //   const data = Math.random() * 100; // Generate random data
+  //   socket.send("data", data);
+  // }, 1000);
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
+
+// app.listen(PORT, () => {
+//   // console.clear()
+//   console.log(`Server@http://localhost:${PORT}`);
+// });
+
+server.listen(5000, () => {
+  // console.log("Server started on port 5000");
   console.log(`Server@http://localhost:${PORT}`);
 });
+
+exports.io = io;
