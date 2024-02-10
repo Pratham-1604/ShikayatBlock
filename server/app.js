@@ -5,6 +5,7 @@ const fs = require("fs");
 const app = express();
 const bodyParser = require("body-parser");
 app.use(cors());
+const multer = require("multer");
 
 require("./db/Conn");
 const User = require("./models/UserSchema");
@@ -16,6 +17,24 @@ app.use(bodyParser.urlencoded());
 // in latest body-parser use like below.
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(upload.none());
+// Set up multer storage configuration
+const path = require("path");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // Specify the directory where you want to save the files
+    cb(null, path.join(__dirname, "uploads"));
+  },
+  filename: function (req, file, cb) {
+    // Generate unique file name
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+// Initialize multer middleware
+const upload = multer({ storage: storage });
+exports.upload = upload;
+
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
