@@ -25,3 +25,5 @@ yarn-error.log*
 
 # removing contents of uploads folder
 uploads/*
+
+scripts/key.py

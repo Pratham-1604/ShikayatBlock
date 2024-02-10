@@ -22,8 +22,29 @@ const handleAddFile = (req, res) => {
 };
 
 const handleComplaintUpdate = (req, res) => {
+  const data = {
+    event_id: "eg_1",
+    event_type: "new_complaint_added",
+    user_id: userId,
+    event_created_date: " 2017-01-01 14:56:00",
+    complaint_updated_at: " 2017-01-02 14:56:00",
+    complaint_status: " open",
+    complaint_type: " complaint",
+    complaint_created_by: " user_id",
+    reporting_agency: " police",
+    complaint_documents: "<url of marksheet or the actual marksheet>",
+    agency_documents: "<optional field if agency responds with a document>",
+    complaint_title: "Lost Original Marsheet",
+    complaint_description:
+      " My original copy of marksheet has been lost. I want a new one.",
+    complaint_created_date: " 2017-01-01 14:58:00",
+    agency_response:
+      "We are verifying your details. A department official will contact you shortly.",
+  };
   res.send("complaint_update");
   emitMessage("complaint_update");
+
+  // update here
   return;
   if (connections) {
     console.log("io is not null");
