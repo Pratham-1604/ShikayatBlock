@@ -67,9 +67,9 @@ const getComplaintDetail = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const complaint = await contractInstance.getComplaint(id);
-    const getId = await contractInstance.getLatestComplaintId();
-    const finalId = parseInt(getId);
-    console.log(finalId);
+    // const getId = await contractInstance.getLatestComplaintId();
+    // const finalId = parseInt(getId);
+    // console.log(finalId);
     res.status(200).json(complaint);
   } catch (error) {
     res.status(500).send(error.message);
@@ -87,8 +87,8 @@ const updateToAComplaint = async (req, res) => {
       description
     );
     const receipt = await tx.wait();
-    const getId = await contractInstance.getLatestComplaintId();
-    const finalId = parseInt(getId);
+    // const getId = await contractInstance.getLatestComplaintId();
+    // const finalId = parseInt(getId);
 
     const obj = {
       event_id: "eg_1",
@@ -122,16 +122,44 @@ const updateToAComplaint = async (req, res) => {
         console.error("Error:", error);
       });
 
-    console.log(getId);
+    // console.log(getId);
     res.status(200).json({
       success: true,
       txHash: receipt.transactionHash,
-      getId: finalId,
+      // getId: finalId,
     });
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
+
+const getComplaintByComplaintType = async(req, res) => {
+  try{
+    const {complaintType} = req.body;
+
+    const tx = await contractInstance.getComplaintsByComplaintType(complaintType);
+    // const receipt = await tx.wait();
+
+    res.status(200).json(tx);
+
+  }catch(err){
+    res.status(500).send("Get Complaint By Complaint Type Error\n", err);
+  }
+}
+
+const getComplaintByAuthorityName = async(req, res) => {
+  try{
+    const {authorityName} = req.body;
+
+    const tx = await contractInstance.getComplaintsByAuthorityName(complaintType);
+    // const receipt = await tx.wait();
+
+    res.status(200).json(tx);
+
+  }catch(err){
+    res.status(500).send("Get Complaint By Authority Name Error\n", err);
+  }
+}
 
 module.exports = {
   newComplaint,
