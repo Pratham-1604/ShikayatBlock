@@ -106,7 +106,7 @@ const ComplaintForm = () => {
   });
 
   const onSubmit = async (values) => {
-    // console.log(values)
+    console.log(values);
     const body = {
       complaint_title: values.complaint_title,
       complaint_description: values.complaint_description,
@@ -116,7 +116,6 @@ const ComplaintForm = () => {
       // status: values.status,
       // suspectAccountType: values.suspectAccountType,
     };
-
 
     const formData = new FormData();
     formData.append("complaint_title", values.complaint_title);
@@ -146,6 +145,10 @@ const ComplaintForm = () => {
         duration: 3000,
         isClosable: true,
       });
+      let isDM = true;
+      if (isDM) {
+        return;
+      }
       onClose();
       navigate(`/complaints`);
     } else {
@@ -202,13 +205,18 @@ const ComplaintForm = () => {
               <FormControl
                 id="complaint_description"
                 mb={4}
+                // name="complaint_description"
                 isInvalid={
                   errors.complaint_description && touched.complaint_description
                 }
               >
                 <FormLabel>Complaint Description</FormLabel>
-                {/* <Field   as={Input} name="complaint_description" type='text'></Field> */}
-                <Textarea as={Input} name="complaint_description" />
+                <Field
+                  as={Input}
+                  name="complaint_description"
+                  type="text"
+                ></Field>
+                {/* <Textarea as={Input} name="complaint_description" /> */}
               </FormControl>
 
               <FormControl

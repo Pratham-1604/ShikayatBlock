@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
 contract ComplaintContract {
     // Struct to represent a complaint
     struct ComplaintContract {
-        uint256 userId; // User ID of the complainant
+        string userId; // User ID of the complainant
         uint256 complaintGroupId; // Group ID of the complaint
         uint256 complaintId; // Complaint ID
         string subject; // Subject of the complaint
@@ -25,7 +25,7 @@ contract ComplaintContract {
 
     // Event to emit when a new complaint is submitted
     event NewComplaint(
-        uint256 indexed userId,
+        string userId,
         uint256 indexed complaintGroupId,
         uint256 indexed complaintId,
         string subject,
@@ -35,7 +35,7 @@ contract ComplaintContract {
 
     // Function to submit a new complaint
     function submitComplaint(
-        uint256 _userId,
+        string memory  _userId,
         string memory _subject,
         string memory _description,
         string memory _ipfs
@@ -76,7 +76,7 @@ contract ComplaintContract {
 
     // Function to update an existing complaint
     function updateComplaint(
-        uint256 userId,
+        string memory userId,
         uint256 complaintGroupId,
         string memory _subject,
         string memory _description,
@@ -114,7 +114,7 @@ contract ComplaintContract {
     )
         public
         view
-        returns (uint256, uint256, string memory, string memory, string memory)
+        returns (string memory, uint256, string memory, string memory, string memory)
     {
         ComplaintContract memory complaint = complaints[_complaintId];
         return (
