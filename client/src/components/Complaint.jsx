@@ -20,9 +20,11 @@ import Upload from "./csi_hack_components/Upload";
 import axios from "axios";
 import { Progress } from "@chakra-ui/progress";
 import ImageUpload from "./csi_hack_components/ImageUpload";
+import { useNavigate } from "react-router-dom";
 
 const ComplaintForm = () => {
   const toast = useToast();
+  const navigate = useNavigate();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [file, setFile] = useState(null);
@@ -115,6 +117,7 @@ const ComplaintForm = () => {
       // suspectAccountType: values.suspectAccountType,
     };
 
+
     const formData = new FormData();
     formData.append("complaint_title", values.complaint_title);
     formData.append("complaint_description", values.complaint_description);
@@ -144,6 +147,7 @@ const ComplaintForm = () => {
         isClosable: true,
       });
       onClose();
+      navigate(`/complaints`);
     } else {
       toast({
         title: "Form upload failed.",
