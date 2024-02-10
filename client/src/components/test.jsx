@@ -19,9 +19,9 @@ const TestComponent = () => {
     mfetch();
   }, []);
   return (
-    <div className="t-bg-blue-500 t-text-white t-p-4">
-      <h1 className="t-text-2xl t-font-bold">Hello, Tailwind CSS!</h1>
-      <p className="t-mt-2">Tailwind CSS is awesome!</p>
+    <div className= "bg-blue-500 text-white p-4">
+      <h1 className= "text-2xl font-bold">Hello, Tailwind CSS!</h1>
+      <p className= "mt-2">Tailwind CSS is awesome!</p>
     </div>
   );
 };

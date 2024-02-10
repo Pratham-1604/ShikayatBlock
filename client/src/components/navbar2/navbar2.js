@@ -11,8 +11,8 @@ import { useAppDispatch } from "../../store";
 const Navbar2 = () => {
   const dispatch = useAppDispatch();
   return (
-    <nav className="nav2 t-h-[30px]">
-      <div className="icons t-h-[30px]">
+    <nav className="nav2 h-[30px]">
+      <div className="icons h-[30px]">
         <AiFillSave className="icon" />
         <RiArrowGoBackFill className="icon" />
         <BiSolidHide className="icon" />

@@ -30,7 +30,7 @@ export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    // <Box className="t-fixed t-z-[100] t-w-full">
+    // <Box className= "fixed z-[100] w-full">
     <Box>
       <Flex
         bg={useColorModeValue("white", "gray.800")}
@@ -138,7 +138,7 @@ const DesktopNav = () => {
 
             {navItem.children && (
               <PopoverContent
-                className="t-mt-[-142px]"
+                className="mt-[-142px]"
                 border={0}
                 boxShadow={"xl"}
                 bg={popoverContentBgColor}

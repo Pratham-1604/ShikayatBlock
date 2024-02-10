@@ -7,8 +7,8 @@ import Trust from "./components/canITrust/canITrust.js";
 // import AddBlog from "../components/AddBlog";
 const Blogs = () => {
   return (
-    <div className="t-bg-no-repeat bg-cover min-h-screen h-full">
-      {/* <div className="t-p-10 bg-[#2b343b] text-white text-5xl pl-16 font-bold">
+    <div className="bg-no-repeat bg-cover min-h-screen h-full">
+      {/* <div className= "p-10 bg-[#2b343b] text-white text-5xl pl-16 font-bold">
         Blogs
       </div> */}
       <div className="">

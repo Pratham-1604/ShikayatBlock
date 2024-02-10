@@ -135,7 +135,7 @@ const GraphVisualization = () => {
   };
 
   return (
-    <div className="t-h-screen t-flex">
+    <div className= "h-screen flex">
       <Graph
         graph={graphData}
         options={{

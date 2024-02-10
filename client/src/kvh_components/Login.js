@@ -79,8 +79,8 @@ export default function Login() {
 
   return (
     <Flex
-      // className="t-w-full t-min-h-[calc(100vh-172px)]"
-      className="t-w-full t-min-h-[calc(100vh-120px+32px)] t-mt-[-32px]"
+      // className= "w-full min-h-[calc(100vh-172px)]"
+      className="w-full min-h-[calc(100vh-120px+32px)] mt-[-32px]"
       align={"center"}
       justify={"center"}
       bg={useColorModeValue("gray.50", "gray.800")}
@@ -127,7 +127,7 @@ export default function Login() {
                   <FormLabel>Password</FormLabel>
                   <Field as={Input} type="password" name="password" />
                 </FormControl>
-                <div className="t-w-[400px]"></div>
+                <div className="w-[400px]"></div>
                 <Stack spacing={10}>
                   <Stack
                     direction={{ base: "column", sm: "row" }}

@@ -10,9 +10,8 @@ const API = axios.create({
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {
-    req.headers.Authorization = `Bearer ${
-      JSON.parse(localStorage.getItem("profile")).token
-    }`;
+    req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem("profile")).token
+      }`;
   }
 
   return req;
@@ -114,6 +113,10 @@ class APIRequests {
   static async addRemark(address, data) {
     console.log(`/api/explore/remark/${address}`);
     return await API.post(`/api/explore/remark/${address}`, data);
+  }
+
+  static async createComplaint(data) {
+    return await API.post(`/api/complaint/create`, data);
   }
 }
 

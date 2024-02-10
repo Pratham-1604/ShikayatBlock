@@ -37,7 +37,7 @@ const Trust = () => {
   };
 
   return (
-    <div className="t-bg-white t-shadow-md t-flex t-rounded-lg t-mx-36 t-my-20">
+    <div className="bg-white shadow-md flex rounded-lg mx-36 my-20">
       <div style={{ flex: 1, padding: "16px" }}>
         <h4 style={{ fontSize: "20px", marginBottom: "8px" }}>Can I trust?</h4>
         <InputGroup>
@@ -58,14 +58,14 @@ const Trust = () => {
       </div>
 
       {/* <div
-        className="t-mt-[60px] t-underline t-cursor-pointer"
+        className= "mt-[60px] underline cursor-pointer"
         onClick={() => {
           navigate("/complaint");
         }}
       >
         Launch Complaint
       </div> */}
-      <div style={{ flex: 1, padding: "16px" }} className="t-mt-[50px]">
+      <div style={{ flex: 1, padding: "16px" }} className="mt-[50px]">
         {isRisky && (
           <div>
             <p

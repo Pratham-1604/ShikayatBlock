@@ -39,10 +39,10 @@ const Layout = ({ children }) => {
   console.log("shouldShowSidebar", shouldShowSidebar);
   return (
     <div className="layout">
-      <div className="t-fixed t-z-[100] t-w-full t-flex t-flex-col">
-        {/* <div className="t-h-[42px] t-bg-[#0262AF] t-flex t-flex-row t-justify-between t-items-center t-text-white t-px-[1rem] "> */}
-        {/* <div className="t-h-[32px] t-bg-[#0262AF] t-flex t-flex-row t-justify-between t-items-center t-text-white t-px-[1rem] "> */}
-        <div className="t-h-[25px] t-bg-[#0262AF] t-flex t-flex-row t-justify-between t-items-center t-text-white t-px-[1rem] t-text-sm">
+      <div className= "fixed z-[100] w-full flex flex-col">
+        {/* <div className= "h-[42px] bg-[#0262AF] flex flex-row justify-between items-center text-white px-[1rem] "> */}
+        {/* <div className= "h-[32px] bg-[#0262AF] flex flex-row justify-between items-center text-white px-[1rem] "> */}
+        <div className= "h-[25px] bg-[#0262AF] flex flex-row justify-between items-center text-white px-[1rem] text-sm">
           {/* <div>GOVERNMENT OF INDIA</div> */}
           <div></div>
           <div>
@@ -62,17 +62,17 @@ const Layout = ({ children }) => {
                 // Handle language change logic here
               }}
             >
-              <option value="en" className="t-text-black">
+              <option value="en" className= "text-black">
                 English
               </option>
-              <option value="hi" className="t-text-black">
+              <option value="hi" className= "text-black">
                 Hindi
               </option>
             </Select>
           </div>
         </div>
-        {/* <div className="t-w-full t-bg-white t-flex t-justify-center">
-          <img src={NavbarImgWO} className="t-h-[80px] t-object-contain" />
+        {/* <div className= "w-full bg-white flex justify-center">
+          <img src={NavbarImgWO} className= "h-[80px] object-contain" />
         </div> */}
         {/* <WithSubnavigation /> */}
         <Navbar />
@@ -80,22 +80,22 @@ const Layout = ({ children }) => {
         {pathName && pathName.includes("boards") && <Navbar2 />}
       </div>
       {shouldShowSidebar ? (
-        // <div className="content t-flex t-flex-row t-pt-[60px] t-pl-[240px]">
+        // <div className="content flex flex-row pt-[60px] pl-[240px]">
         // pathName.includes("boards") &&
         <div
           className={
             pathName && !pathName.includes("boards")
-              ? "content t-flex t-flex-row t-pt-[90px] t-pl-[240px]"
-              : "content t-flex t-flex-row t-pt-[120px] t-pl-[240px]"
+              ? "content flex flex-row pt-[90px] pl-[240px]"
+              : "content flex flex-row pt-[120px] pl-[240px]"
           }
         >
           <Sidebar />
-          <main className="t-w-full">{children}</main>
+          <main className= "w-full">{children}</main>
         </div>
       ) : (
-        <div className="content t-flex t-flex-row t-pt-[120px]">
+        <div className="content flex flex-row pt-[120px]">
           {/* <Sidebar /> */}
-          <main className="t-w-full">{children}</main>
+          <main className= "w-full">{children}</main>
         </div>
       )}
     </div>

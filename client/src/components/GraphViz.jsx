@@ -427,9 +427,9 @@ const GraphVisualization = () => {
   }, [cryptoAddress]);
 
   return (
-    <div className="t-h-[calc(100vh-120px)] t-flex" ref={componentRef}>
+    <div className= "h-[calc(100vh-120px)] flex" ref={componentRef}>
       {graphData.nodes.length === 0 && (
-        <div className="t-h-[calc(100vh-120px)] t-flex t-justify-center t-w-full t-mt-[100px]">
+        <div className= "h-[calc(100vh-120px)] flex justify-center w-full mt-[100px]">
           Enter Crypto Address To Explore
         </div>
       )}

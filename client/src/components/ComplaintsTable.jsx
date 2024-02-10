@@ -141,7 +141,7 @@ const ComplainsTable = () => {
                   href={`/boards/${entry.suspectWalletAddress}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="t-underline"
+                  className= "underline"
                 >
                   {entry.suspectWalletAddress}
                 </a>

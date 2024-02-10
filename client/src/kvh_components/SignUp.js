@@ -96,8 +96,8 @@ export default function SignupCardOg() {
   return (
     <Flex
       // minH={"100vh"}
-      // className="t-min-h-[calc(100vh-172px)]"
-      className="t-min-h-[calc(100vh-120px+32px)] t-mt-[-32px]"
+      // className= "min-h-[calc(100vh-172px)]"
+      className="min-h-[calc(100vh-120px+32px)] mt-[-32px]"
       align={"center"}
       justify={"center"}
       bg={useColorModeValue("gray.50", "gray.800")}
@@ -217,7 +217,7 @@ export default function SignupCardOg() {
                       color="red.500"
                     />
                   </FormControl>
-                  <div className="t-w-[400px]"></div>
+                  <div className="w-[400px]"></div>
                   <Stack spacing={10} pt={2}>
                     <Button
                       type="submit"

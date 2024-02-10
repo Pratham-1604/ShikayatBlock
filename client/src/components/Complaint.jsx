@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import APIRequests from "../api";
 
 const ComplaintForm = () => {
   const initialValues = {
@@ -37,6 +38,10 @@ const ComplaintForm = () => {
 
   const onSubmit = (values) => {
     console.log(values);
+    APIRequests.createComplaint(values)
+      .then((response) => {
+        console.log(response);
+      })
     // You can handle form submission logic here
   };
 
@@ -47,7 +52,7 @@ const ComplaintForm = () => {
         <Heading mb={4}>File a Cyber Complaint</Heading>
         <Formik
           initialValues={initialValues}
-          validationSchema={validationSchema}
+          // validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
           {({ errors, touched }) => (

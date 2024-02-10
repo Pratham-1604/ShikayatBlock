@@ -82,7 +82,7 @@ const Dashboard = () => {
         </GridItem>
 
         <GridItem colSpan={4}>
-          <Heading color="primary" className="t-mb-[1rem] t-mt-[1rem]">
+          <Heading color="primary" className="mb-[1rem] mt-[1rem]">
             Complaints
           </Heading>
           <ComplainsTable />

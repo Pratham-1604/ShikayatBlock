@@ -119,21 +119,21 @@ const Navbar = () => {
   }, [userData2]);
 
   return (
-    // <nav className="nav1 t-bg-white t-border-t-2 t-border-cyan-300">
-    // <nav className="nav1 t-bg-[#0262AF] t-border-t-2 t-">
-    <nav className="nav1 t-bg-white t-border-t-[1px] t-border-b-[1px]  ">
-      <div className="logo t-flex t-items-center">
-        {/* <h2 className="nazar t-text-white">NAZAR</h2> */}
-        {/* <h2 className="t-italic t-font-bold t-text-[2rem] t-text-white"> */}
-        {/* <h2 className="t-italic t-font-bold t-text-[2rem] t-text-[#0262AF]">
+    // <nav className="nav1 bg-white border-t-2 border-cyan-300">
+    // <nav className="nav1 bg-[#0262AF] border-t-2 ">
+    <nav className="nav1 bg-white border-t-[1px] border-b-[1px]  ">
+      <div className="logo flex items-center">
+        {/* <h2 className="nazar text-white">NAZAR</h2> */}
+        {/* <h2 className= "italic font-bold text-[2rem] text-white"> */}
+        {/* <h2 className= "italic font-bold text-[2rem] text-[#0262AF]">
           NAZAR
         </h2> */}
         <img src="/nazar-logo.png" alt="Nazar" />
       </div>
       {/* <div className="search-bar"> */}
-      <div className="t-flex t-justify-center">
+      <div className= "flex justify-center">
         {userRole !== "citizen" && (
-          <div className="t-flex t-items-center t-w-[500px]">
+          <div className= "flex items-center w-[500px]">
             <InputGroup>
               {/* <InputLeftAddon
               children={cryptoType}
@@ -146,8 +146,8 @@ const Navbar = () => {
                   <Image
                     src={typeToImgMap[cryptoType]}
                     alt="crypto logo"
-                    // className="t-h-[32px]"
-                    className="t-h-[22px]"
+                    // className= "h-[32px]"
+                    className= "h-[22px]"
                   />
                 }
                 borderRadius="100px 0 0 100px"
@@ -210,7 +210,7 @@ const Navbar = () => {
       </div>
 
       {!userName && (
-        <div className="t-flex t-justify-center t-flex-row t-items-center">
+        <div className= "flex justify-center flex-row items-center">
           <Button
             as={"a"}
             fontSize={"sm"}
@@ -221,7 +221,7 @@ const Navbar = () => {
           >
             Sign In
           </Button>
-          <div className="t-w-[1rem]"></div>
+          <div className= "w-[1rem]"></div>
           <Button
             as={"a"}
             display={{ base: "none", md: "inline-flex" }}
@@ -242,24 +242,24 @@ const Navbar = () => {
 
       {userName && (
         <div className="user">
-          <div className="user-bar t-flex t-flex-row t-h-[40px] ">
+          <div className="user-bar flex flex-row h-[40px] ">
             {userName && <CgProfile className="profile" size={30} />}
 
-            <div className="t-ml-[0.5rem] t-font-semibold">
+            <div className= "ml-[0.5rem] font-semibold">
               {" "}
               {userName ? userName : "Sign In"}
             </div>
           </div>{" "}
           {!userName && (
-            <div className=" t-ml-[0.5rem] user-bar t-flex t-flex-row t-h-[40px] t-justify-center">
+            <div className=" ml-[0.5rem] user-bar flex flex-row h-[40px] justify-center">
               {/* {userName && <CgProfile className="profile" size={30} />}
 
-          <div className="t-ml-[0.5rem] t-font-semibold">
+          <div className= "ml-[0.5rem] font-semibold">
             {" "}
             {userName ? userName : "Sign In"}
           </div> */}
 
-              <div className="t-ml-[0.5rem] t-font-semibold">
+              <div className= "ml-[0.5rem] font-semibold">
                 {userName ? userName : "Sign Up"}
               </div>
             </div>

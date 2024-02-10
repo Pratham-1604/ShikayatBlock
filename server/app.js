@@ -40,6 +40,7 @@ app.use(
 baseR.use("/explore", require("./Router/Block"));
 app.use("/auth", require("./Router/Auth"));
 baseR.use("/market", require("./Router/Market"));
+baseR.use("/complaint", require("./Router/Complaint"));
 
 // app.use("/fixed_label", (req, res, next) => {
 //   // Allow requests from any origin
