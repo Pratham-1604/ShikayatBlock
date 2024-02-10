@@ -3,6 +3,7 @@ const cors = require("cors");
 const axios = require("axios");
 const fs = require("fs");
 const app = express();
+const bodyParser = require("body-parser");
 app.use(cors());
 
 require("./db/Conn");
@@ -10,9 +11,13 @@ const User = require("./models/UserSchema");
 const AddressTracker = require("./models/AddressTracker");
 const auth = require("./middlewares/auth");
 // const { default: auth } = require("./middlewares/auth");
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+// in latest body-parser use like below.
+// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 
 const baseR = express.Router();
 app.use(

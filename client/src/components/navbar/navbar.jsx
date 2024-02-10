@@ -128,7 +128,8 @@ const Navbar = () => {
         {/* <h2 className= "italic font-bold text-[2rem] text-[#0262AF]">
           NAZAR
         </h2> */}
-        <img src="/nazar-logo.png" alt="Nazar" />
+        {/* <img src="/nazar-logo.png" alt="Nazar" /> */}
+        <text className= "text-[#0262AF] font-bold text-[2rem]">ComplaiChain</text>
       </div>
       {/* <div className="search-bar"> */}
       <div className= "flex justify-center">
