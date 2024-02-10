@@ -19,6 +19,8 @@ import { Progress } from "@chakra-ui/progress";
 import ImageUpload from "./csi_hack_components/ImageUpload";
 import { useNavigate } from "react-router-dom";
 
+const isDM = true;
+
 const ComplaintForm = () => {
   const [authority, setAuthority] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -101,6 +103,7 @@ const ComplaintForm = () => {
     // transactionId: Yup.string().required("Required"),
     // otherDetails: Yup.string().required("Required"),
   });
+  let fd = null;
 
   const onSubmit = async (values) => {
     console.log(values);
@@ -114,7 +117,7 @@ const ComplaintForm = () => {
       // suspectAccountType: values.suspectAccountType,
     };
 
-    const formData = new FormData();
+    let formData = new FormData();
     formData.append("complaint_title", values.complaint_title);
     formData.append("complaint_description", values.complaint_description);
     formData.append("complaint_type", values.complaint_type);
@@ -131,6 +134,13 @@ const ComplaintForm = () => {
     // formData.append('suspectAccountType', values.suspectAccountType)
     console.log(file);
     console.log(formData);
+    if (isDM) {
+      if (fd) {
+        formData = fd;
+      } else {
+        fd = formData;
+      }
+    }
     const res = await APIRequests.createComplaint(formData).catch((err) => {
       console.log(err);
     });

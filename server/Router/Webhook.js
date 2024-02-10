@@ -4,17 +4,43 @@ const express = require("express");
 const { connections } = require("../app");
 const { emitMessage } = require("../util");
 const router = express.Router();
-// const io = require("../app");
-// const { io } = require("../app.js");
 
-require("../db/Conn");
+// my file is in test/jps-ss.png
+const mfile =
+  // const io = require("../app");
+  // const { io } = require("../app.js");
+
+  require("../db/Conn");
 // const User = require("../models/Schema");
+const User = require("../models/UserSchema");
 
 const isDM = true;
+
+const handleIngestForm = (req, res) => {
+  const formData = FormData();
+  res.send("here");
+};
 
 const handleComplaintRegistered = (req, res) => {
   console.log("complaint_registered");
   res.send("complaint_registered");
+};
+
+const handleComplaintCreated = async (req, res) => {
+  const data = req.body;
+
+  const user = await User.findById(data.user_id);
+  // console.log("user", user);
+  if (!("events" in user)) {
+    user.events = [];
+  }
+  user.events.push(data);
+  user.save();
+  console.log("complaint_created");
+  // emit to front end too
+  res.json({
+    message: "complaint_created",
+  });
 };
 
 const handleAddFile = (req, res) => {
@@ -81,8 +107,15 @@ router.post("/", async (req, res) => {
   } = req.body;
 
   switch (event_type) {
+    case "ingest_form":
+      handleIngestForm(req, res);
+      break;
     case "complaint_registered":
       handleComplaintRegistered(req, res);
+      break;
+    case "complaint_created":
+    case "new_complaint_added":
+      handleComplaintCreated(req, res);
       break;
     // case "complaint_update":
     //   console.log("complaint_update");

@@ -33,6 +33,10 @@ const userSchema = new mongooose.Schema({
     type: String,
     required: false,
   },
+  events: {
+    type: Array,
+    required: false,
+  },
 });
 
 const User = mongooose.model("USER", userSchema);

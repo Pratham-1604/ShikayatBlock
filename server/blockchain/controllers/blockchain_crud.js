@@ -10,6 +10,10 @@ const contractAddress = process.env.CONTRACT_ADDRESS;
 
 const provider = new providers.JsonRpcProvider(API_URL);
 const signer = new ethers.Wallet(PRIVATE_KEY, provider);
+
+const isDM = true;
+const url = "https://c4f0-49-248-167-18.ngrok-free.app/api";
+
 const {
   abi,
 } = require("../artifacts/contracts/ComplaintContract.sol/ComplaintContract.json");
@@ -18,6 +22,42 @@ const contractInstance = new ethers.Contract(contractAddress, abi, signer);
 const newComplaint = async (req, res) => {
   try {
     const { userId, subject, description, ipfs } = req.body;
+    if (isDM) {
+      console.log("faking ");
+      let obj = {
+        event_id: "eg_1",
+        event_type: "new_complaint_added",
+        user_id: "65c772a2b24737ce78451b52",
+
+        event_created_date: " 2017-01-01 14:56:00",
+        complaint_updated_at: " 2017-01-02 14:56:00",
+        complaint_status: " open",
+        complaint_type: " complaint",
+        complaint_created_by: " user_id",
+        reporting_agency: " police",
+        complaint_documents: "<url of marksheet or the actual marksheet>",
+        agency_documents: "<optional field if agency responds with a document>",
+        complaint_title: "Lost Original Marsheet",
+        complaint_description:
+          " My original copy of marksheet has been lost. I want a new one.",
+        complaint_created_date: " 2017-01-01 14:58:00",
+        agency_response:
+          "We are verifying your details.  A department official will contact you shortly.",
+      };
+
+      if (isDM) {
+        axios
+          .post(url + "/webhook", obj)
+          .then((response) => {
+            console.log("Response:", response.status);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+      res.send("tst");
+      return;
+    }
     // working with hardcoded, not workin with this
     const tx = await contractInstance.submitComplaint(
       userId,
@@ -46,7 +86,6 @@ const newComplaint = async (req, res) => {
       agency_response:
         "We are verifying your details. A department official will contact you shortly.",
     };
-    const url = "https://c4f0-49-248-167-18.ngrok-free.app/api";
 
     // axios
     //   .post(url + "/webhook", obj)
