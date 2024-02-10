@@ -11,7 +11,7 @@ contract ComplaintContract {
         uint256 complaintId; // Complaint ID
         string subject; // Subject of the complaint
         string description; // Description of the complaint
-        // string ipfsHash; // IPFS hash of the complaint details
+        string ipfsHash; // IPFS hash of the complaint details
     }
 
     // Mapping to store complaints
@@ -29,14 +29,16 @@ contract ComplaintContract {
         uint256 indexed complaintGroupId,
         uint256 indexed complaintId,
         string subject,
-        string description
+        string description,
+        string ipfsHash
     );
 
     // Function to submit a new complaint
     function submitComplaint(
         uint256 _userId,
         string memory _subject,
-        string memory _description
+        string memory _description,
+        string memory _ipfs
     ) public {
         // Incrementing complaint count
         complaintCount++;
@@ -48,8 +50,8 @@ contract ComplaintContract {
             complaintGroupId: complaintGroupCount,
             complaintId: complaintCount,
             subject: _subject,
-            description: _description
-            // ipfsHash: ""
+            description: _description,
+            ipfsHash: _ipfs
         });
 
         // // Storing complaint details on IPFS and getting the hash
@@ -67,7 +69,8 @@ contract ComplaintContract {
             complaintGroupCount,
             complaintCount,
             _subject,
-            _description
+            _description,
+            _ipfs
         );
     }
 
@@ -76,7 +79,8 @@ contract ComplaintContract {
         uint256 userId,
         uint256 complaintGroupId,
         string memory _subject,
-        string memory _description
+        string memory _description,
+        string memory _ipfs
     ) public {
         // Incrementing complaint count for the new complaint object
         complaintCount++;
@@ -87,8 +91,8 @@ contract ComplaintContract {
             complaintGroupId: complaintGroupId,
             complaintId: complaintCount,
             subject: _subject,
-            description: _description
-            // ipfsHash: ""
+            description: _description,
+            ipfsHash: _ipfs
         });
 
         complaints[complaintCount] = newComplaint;
@@ -99,7 +103,8 @@ contract ComplaintContract {
             complaintGroupId,
             complaintCount,
             _subject,
-            _description
+            _description,
+            _ipfs
         );
     }
 
@@ -109,9 +114,20 @@ contract ComplaintContract {
     )
         public
         view
-        returns (uint256, uint256, string memory, string memory)
+        returns (uint256, uint256, string memory, string memory, string memory)
     {
         ComplaintContract memory complaint = complaints[_complaintId];
-        return (complaint.userId,complaint.complaintGroupId,complaint.subject,complaint.description);
+        return (
+            complaint.userId,
+            complaint.complaintGroupId,
+            complaint.subject,
+            complaint.description,
+            complaint.ipfsHash
+        );
+    }
+
+    // Function to retrieve latest complaint ID
+    function getLatestComplaintId() public view returns (uint256) {
+        return (complaintCount);
     }
 }
