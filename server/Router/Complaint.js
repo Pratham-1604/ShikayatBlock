@@ -72,9 +72,9 @@ const axios = require("axios");
 
 complaintR.post("/create", upload.single("file"), async (req, res) => {
   const { complaint_title, complaint_description } = req.body;
-  console.log(req.body);
-  console.log(req.file);
-  console.log("ComplaintRouter");
+  // console.log(req.body);
+  // console.log(req.file);
+  // console.log("ComplaintRouter");
   // res.send("CryptoRouter");
 
   // const fileName = req.file.filename;
@@ -88,29 +88,23 @@ complaintR.post("/create", upload.single("file"), async (req, res) => {
     return res.status(400).json({ error: "No file path." });
   }
 
-  console.log(`File received. Path: ${filePath}`);
+  // console.log(`File received. Path: ${filePath}`);
 
   const storedhash = await saveFile(filePath);
   console.log("Response Stored Hash : ", storedhash);
 
   try {
-    console.log("req.body", req.body);
-    console.log("req.userID", req.userID);
+    // console.log("req.body", req.body);
+    // console.log("req.userID", req.userID);
     // console.log("userID", req);
 
     const response = await axios.post(
       "http://localhost:8080/blockchain/newComplaints",
-      // {
-      //   userId: req.userID,
-      //   subject: complaint_title,
-      //   description: complaint_description,
-      //   ipfs: storedhash,
-      // }
       {
         userId: req.userID,
-        subject: "hello",
-        description: "description",
-        ipfs: "ipfs",
+        subject: complaint_title,
+        description: complaint_description,
+        ipfs: storedhash,
       }
     );
     if (response.status === 200) {

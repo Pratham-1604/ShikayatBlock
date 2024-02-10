@@ -48,15 +48,16 @@ const newComplaint = async (req, res) => {
     };
     const url = "https://c4f0-49-248-167-18.ngrok-free.app/api";
 
-    axios
-      .post(url + "/webhook", obj)
-      .then((response) => {
-        console.log("Response:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    res.json({ success: true, tx: txHash });
+    // axios
+    //   .post(url + "/webhook", obj)
+    //   .then((response) => {
+    //     console.log("Response:", response.status);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
+    console.log("done");
+    res.status(200).json({ success: true, tx: txHash });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -66,7 +67,10 @@ const getComplaintDetail = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const complaint = await contractInstance.getComplaint(id);
-    res.json(complaint);
+    const getId = await contractInstance.getLatestComplaintId();
+    const finalId = parseInt(getId);
+    console.log(finalId);
+    res.status(200).json(complaint);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -119,7 +123,7 @@ const updateToAComplaint = async (req, res) => {
       });
 
     console.log(getId);
-    res.json({
+    res.status(200).json({
       success: true,
       txHash: receipt.transactionHash,
       getId: finalId,
