@@ -1,24 +1,25 @@
 const express = require("express");
 const cors = require("cors");
-const axios = require("axios");
-const fs = require("fs");
-const app = express();
 const bodyParser = require("body-parser");
-app.use(cors());
 const multer = require("multer");
+const { Server: WebSocketServer } = require("ws");
+const app = express();
+const server = require("http").createServer(app);
+const wsServer = new WebSocketServer({ server });
+const auth = require("./middlewares/auth");
+// const {}
+
+// io.clients
+const { initSocket } = require("./util");
+
+initSocket(wsServer);
 
 require("./db/Conn");
-const User = require("./models/UserSchema");
-const AddressTracker = require("./models/AddressTracker");
-const auth = require("./middlewares/auth");
-// const { default: auth } = require("./middlewares/auth");
+
+app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-// in latest body-parser use like below.
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(upload.none());
-// Set up multer storage configuration
+
 const path = require("path");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -35,7 +36,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 exports.upload = upload;
 
-app.use(express.json());
+// app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
 const baseR = express.Router();
@@ -65,6 +66,7 @@ baseR.use("/explore", require("./Router/Block"));
 app.use("/auth", require("./Router/Auth"));
 baseR.use("/market", require("./Router/Market"));
 baseR.use("/complaint", auth, require("./Router/Complaint"));
+baseR.use("/webhook", require("./Router/Webhook"));
 
 // app.use("/fixed_label", (req, res, next) => {
 //   // Allow requests from any origin
@@ -88,7 +90,53 @@ baseR.use("/complaint", auth, require("./Router/Complaint"));
 // });
 
 const PORT = 5000;
-app.listen(PORT, () => {
-  // console.clear()
+// const io = socketIo(server);
+// const connections = [];
+
+// io.on("connection", (socket) => {
+//   connections.push(socket);
+//   console.log("connections", connections.length);
+
+//   console.log("A client connected");
+
+//   // Simulating data emitting every second
+//   // setInterval(() => {
+//   //   const data = Math.random() * 100; // Generate random data
+//   //   socket.send("data", data);
+//   // }, 1000);
+
+//   socket.on("disconnect", () => {
+//     console.log("Client disconnected");
+//   });
+// });
+
+// app.listen(PORT, () => {
+//   // console.clear()
+//   console.log(`Server@http://localhost:${PORT}`);
+// });
+
+server.listen(5000, () => {
+  // console.log("Server started on port 5000");
   console.log(`Server@http://localhost:${PORT}`);
 });
+
+// exports.io = io;
+// exports.connections = connections;
+
+// const clients = [];
+// wsServer.on("connection", (ws) => {
+//   // ws.send("Welcome to the websocket server");
+//   setInterval(() => {
+//     ws.send(JSON.stringify({ type: "message", data: "Hello from server" }));
+//   }, 1000);
+//   clients.push(ws);
+//   console.log("Client connected");
+//   clients.forEach((client) => {
+//     client.send(JSON.stringify({ type: "message", data: "Hello from server" }));
+//   });
+
+//   ws.on("close", () => {
+//     clients = clients.filter((client) => client !== ws);
+//     console.log("Client disconnected");
+//   });
+// });
