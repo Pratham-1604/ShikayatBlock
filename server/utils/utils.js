@@ -15,6 +15,7 @@ const getAuthorityFromComplaint = async (complaintDescription) => {
             }
 
             const authorityName = stdout.trim();
+            console.log("complaintDescription: ", complaintDescription);
             console.log("Authority Name: ", authorityName);
 
             resolve(authorityName);

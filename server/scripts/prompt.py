@@ -40,10 +40,12 @@ authorities_resolving_complaints = [
     "National Commission for Protection of Child Rights (NCPCR)",
     "National Green Tribunal (NGT)",
     "State Pollution Control Board (SPCB)",
+    "Public Works Department (PWD)", 
     "National Commission for Minorities (NCM)",
     "National Commission for Scheduled Castes (NCSC)",
     "National Commission for Scheduled Tribes (NCST)",
     "National Commission for Backward Classes (NCBC)",
+    "Police",
 ]
 
 

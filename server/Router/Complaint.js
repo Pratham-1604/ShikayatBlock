@@ -5,16 +5,21 @@ const { getAuthorityFromComplaint } = require("../utils/utils");
 const complaintR = express.Router();
 
 complaintR.post("/create", upload.single("file"), (req, res) => {
+  console.log(req.body);
+  console.log(req.file);
   console.log("ComplaintRouter");
   res.send("CryptoRouter");
 });
 
-complaintR.post("/get_authority_name", async (req, res) => {
+complaintR.post("/get_authority", async (req, res) => {
+  console.log(req.body);
+  console.log("from router", req.body.complaint_description);
   const authorityName = await getAuthorityFromComplaint(
     req.body.complaint_description
   );
   res.send({
-    authority_name: authorityName ?? "No authority found",
+    authority: authorityName ?? "No authority found",
+    complaint_description: req.body.complaint_description,
   });
 });
 

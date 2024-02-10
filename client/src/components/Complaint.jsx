@@ -8,7 +8,6 @@ import {
   FormLabel,
   Select,
   Input,
-  Textarea,
   useToast,
   useDisclosure,
   Button,
@@ -16,12 +15,51 @@ import {
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import APIRequests from "../api";
-import Upload from "./csi_hack_components/Upload";
-import axios from "axios";
 import { Progress } from "@chakra-ui/progress";
 import ImageUpload from "./csi_hack_components/ImageUpload";
 
 const ComplaintForm = () => {
+  const [authority, setAuthority] = useState(null);
+  const [loading, setLoading] = useState(false);
+  let active = true;
+  let authorityNameTimeout = null;
+  // let count = 0;
+
+  const getAuthorityName = (complaint_description, active) => {
+    // count += 1;
+    APIRequests.getAuthorityName(complaint_description)
+      .then((res) => {
+        console.log(res);
+        if (active) {
+          setAuthority(res.data.authority);
+          setLoading(false);
+        } else {
+          console.log("Request cancelled");
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleComplaintDescriptionChange = (e) => {
+    const { value } = e.target;
+    console.log("from form", value);
+    if (value.length > 5 || true) {
+      setLoading(true);
+      if (authorityNameTimeout) {
+        clearTimeout(authorityNameTimeout);
+      }
+      authorityNameTimeout = setTimeout(() => {
+        getAuthorityName(value, active);
+        // setLoading(false);
+      }, 1000);
+    } else {
+      setAuthority(null);
+    }
+  };
+
   const toast = useToast();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,53 +72,11 @@ const ComplaintForm = () => {
     setFile(null);
   };
 
-  // const onUpload = () => {
-
-  //     const storageRef = ref(storage, `reports/$` + uuidv4())
-  //     const uploadTask = uploadBytesResumable(storageRef, file)
-  //     uploadTask.on('state_changed',
-  //         (snapshot) => {
-  //             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-  //             // console.log('Upload is ' + progress + '% done')
-  //             switch (snapshot.state) {
-  //                 case 'paused':
-  //                     // console.log('Upload is paused')
-  //                     setUploading({ progress, status: 'paused' })
-  //                     break
-  //                 case 'running':
-  //                     // console.log('Upload is running')
-  //                     setUploading({ progress, status: 'running' })
-  //                     break
-  //             }
-  //         },
-  //         (error) => {
-  //             console.log(error)
-  //             toast({
-  //                 title: "Report upload failed.",
-  //                 description: "We couldn't upload your report for analysis.",
-  //                 status: "error",
-  //                 duration: 3000,
-  //                 isClosable: true,
-  //             })
-  //         },
-  //         () => {
-  //             toast({
-  //                 title: "Report uploaded.",
-  //                 description: "We've uploaded your report for analysis.",
-  //                 status: "success",
-  //                 duration: 3000,
-  //                 isClosable: true,
-  //             })
-  //             onClose()
-  //             onFileCancel()
-  //         }
-  //     )
-  // }
-
   const initialValues = {
     complaint_title: "",
     complaint_description: "",
     complaint_type: "",
+    authority: "",
     // category: "",
     // dateTime: "",
     // suspectAccountType: "",
@@ -94,6 +90,7 @@ const ComplaintForm = () => {
     complaint_title: Yup.string().required("Required"),
     complaint_description: Yup.string().required("Required"),
     complaint_type: Yup.string().required("Required"),
+    // authority:
     // category: Yup.string().required("Required"),
     // dateTime: Yup.string().required("Required"),
     // suspectAccountType: Yup.string().required("Required"),
@@ -119,10 +116,12 @@ const ComplaintForm = () => {
     formData.append("complaint_title", values.complaint_title);
     formData.append("complaint_description", values.complaint_description);
     formData.append("complaint_type", values.complaint_type);
+    formData.append("authority", values.authority);
     // formData.append('file', file)
     // Append the file with a unique name ('file' in this case)
     // formData.append('complaint_documents', file);
     formData.append("file", file);
+
     // formData.append('complaint_status', 'pending')
     // formData.append('complaint_category', 'cybercrime')
 
@@ -166,25 +165,8 @@ const ComplaintForm = () => {
           // validationSchema={validationSchema}
           onSubmit={onSubmit}
         >
-          {({ errors, touched }) => (
+          {({ errors, touched, handleChange }) => (
             <Form>
-              {/* <FormControl
-                id="category"
-                mb={4}
-                isInvalid={errors.category && touched.category}
-              >
-                <FormLabel>Category of Complaint</FormLabel>
-                <Field
-                  as={Select}
-                  name="category"
-                  placeholder="Select a category"
-                >
-                  <option value="sextortion">Sextortion</option>
-                  <option value="ransomware">Ransomware</option>
-                  <option value="other">Other</option>
-                </Field>
-              </FormControl> */}
-
               <FormControl
                 id="complaint_title"
                 // name="complaint_title"
@@ -203,9 +185,38 @@ const ComplaintForm = () => {
                 }
               >
                 <FormLabel>Complaint Description</FormLabel>
-                {/* <Field   as={Input} name="complaint_description" type='text'></Field> */}
-                <Textarea as={Input} name="complaint_description" />
+                <Field
+                  as={Input}
+                  name="complaint_description"
+                  type="text"
+                  onChange={(e) => {
+                    handleChange(e);
+                    handleComplaintDescriptionChange(e);
+                  }}
+                  // onBlur={handleComplaintDescriptionChange}
+                ></Field>
               </FormControl>
+
+              {false ? (
+                <p>Loading...</p>
+              ) : authority || true ? (
+                // <p>Authority: {authority}</p>
+                // have text field here
+                <FormControl
+                  id="authority"
+                  mb={4}
+                  isInvalid={errors.authority && touched.authority}
+                >
+                  <FormLabel>Authority</FormLabel>
+                  <Field
+                    as={Input}
+                    name="authority"
+                    type="text"
+                    value={loading ? "Loading..." : authority}
+                    // readOnly
+                  />
+                </FormControl>
+              ) : null}
 
               <FormControl
                 id="complaint_type"
@@ -224,19 +235,18 @@ const ComplaintForm = () => {
                 </Field>
               </FormControl>
 
-              {/* <Upload /> */}
               <FormLabel>Related Document</FormLabel>
               {file ? (
-                <div class="rounded-md bg-[#F5F7FB] py-4 px-8">
-                  <div class="flex items-center justify-between">
-                    <span class="truncate pr-3 text-base font-medium text-[#07074D]">
+                <div className="rounded-md bg-[#F5F7FB] py-4 px-8">
+                  <div className="flex items-center justify-between">
+                    <span className="truncate pr-3 text-base font-medium text-[#07074D]">
                       {file.name}
                     </span>
                     <button
                       onClick={() => {
                         setFile(null);
                       }}
-                      class="text-[#07074D]"
+                      className="text-[#07074D]"
                     >
                       <svg
                         width="10"
@@ -260,7 +270,7 @@ const ComplaintForm = () => {
                       </svg>
                     </button>
                   </div>
-                  <div class="relative mt-5 h-[6px] w-full rounded-lg bg-[#E2E5EF]">
+                  <div className="relative mt-5 h-[6px] w-full rounded-lg bg-[#E2E5EF]">
                     <Progress value={uploading.progress} colorScheme="blue" />
                   </div>
                 </div>
@@ -269,83 +279,15 @@ const ComplaintForm = () => {
                   <input
                     id="dropzone-file"
                     type="file"
-                    class="hidden"
+                    className="hidden"
                     onChange={(e) => {
                       setFile(e.target.files[0]);
                     }}
                   />
                 </ImageUpload>
               )}
-              {/* <FormControl
-                id="dateTime"
-                mb={4}
-                isInvalid={errors.dateTime && touched.dateTime}
-              >
-                <FormLabel>Approximate Date and Time</FormLabel>
-                <Field as={Input} type="datetime-local" name="dateTime" />
-              </FormControl> */}
 
-              {/* <FormControl
-                id="suspectAccountType"
-                mb={4}
-                isInvalid={
-                  errors.suspectAccountType && touched.suspectAccountType
-                }
-              >
-                <FormLabel>Suspect Account Type</FormLabel>
-                <Field
-                  as={Select}
-                  name="suspectAccountType"
-                  placeholder="Select an account type"
-                >
-                  <option value="instagram">Instagram</option>
-                  <option value="twitter">Twitter</option>
-                  <option value="telegram">Telegram</option>
-                  <option value="other">Other</option>
-                </Field>
-              </FormControl> */}
-              {/* 
-              <FormControl
-                id="suspectAccountLink"
-                mb={4}
-                isInvalid={
-                  errors.suspectAccountLink && touched.suspectAccountLink
-                }
-              >
-                <FormLabel>Suspect Account Link</FormLabel>
-                <Field as={Input} type="text" name="suspectAccountLink" />
-              </FormControl> */}
-
-              {/* <FormControl  
-                id="suspectWalletAddress"
-                mb={4}
-                isInvalid={
-                  errors.suspectWalletAddress && touched.suspectWalletAddress
-                }
-              >
-                <FormLabel>Suspect Wallet Address</FormLabel>
-                <Field as={Input} type="text" name="suspectWalletAddress" />
-              </FormControl>
-
-              <FormControl
-                id="transactionId"
-                mb={4}
-                isInvalid={errors.transactionId && touched.transactionId}
-              >
-                <FormLabel>Transaction ID</FormLabel>
-                <Field as={Input} type="text" name="transactionId" />
-              </FormControl>
-
-              <FormControl
-                id="otherDetails"
-                mb={4}
-                isInvalid={errors.otherDetails && touched.otherDetails}
-              >
-                <FormLabel>Other Details</FormLabel>
-                <Field as={Textarea} name="otherDetails" />
-              </FormControl> */}
-
-              <Button colorScheme="blue" type="submit">
+              <Button colorScheme="blue" type="submit" className="mt-[1rem]">
                 Submit
               </Button>
             </Form>

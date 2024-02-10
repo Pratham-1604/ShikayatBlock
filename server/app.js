@@ -1,33 +1,24 @@
 const express = require("express");
 const cors = require("cors");
-const axios = require("axios");
-const fs = require("fs");
-const app = express();
 const bodyParser = require("body-parser");
-app.use(cors());
 const multer = require("multer");
-const server = require("http").createServer(app);
 const { Server: WebSocketServer } = require("ws");
+const app = express();
+const server = require("http").createServer(app);
+const wsServer = new WebSocketServer({ server });
 // const {}
 
-const wsServer = new WebSocketServer({ server });
 // io.clients
 const { initSocket } = require("./util");
 
 initSocket(wsServer);
 
 require("./db/Conn");
-const User = require("./models/UserSchema");
-const AddressTracker = require("./models/AddressTracker");
-const auth = require("./middlewares/auth");
-// const { default: auth } = require("./middlewares/auth");
+
+app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-// in latest body-parser use like below.
-// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(upload.none());
-// Set up multer storage configuration
+
 const path = require("path");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -44,7 +35,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 exports.upload = upload;
 
-app.use(express.json());
+// app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
 const baseR = express.Router();
