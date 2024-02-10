@@ -129,19 +129,21 @@ const Navbar = () => {
           NAZAR
         </h2> */}
         {/* <img src="/nazar-logo.png" alt="Nazar" /> */}
-        <text className= "text-[#0262AF] font-bold text-[2rem]">ComplaiChain</text>
+        <text className="text-[#0262AF] font-bold text-[2rem]">
+          ComplaiChain
+        </text>
       </div>
       {/* <div className="search-bar"> */}
-      <div className= "flex justify-center">
+      <div className="flex justify-center">
         {userRole !== "citizen" && (
-          <div className= "flex items-center w-[500px]">
-            <InputGroup>
-              {/* <InputLeftAddon
+          <div className="flex items-center w-[500px]">
+            {/* <InputGroup> */}
+            {/* <InputLeftAddon
               children={cryptoType}
               borderRadius="100px 0 0 100px"
               // onChange={handleInputChange}
             /> */}
-              <InputLeftAddon
+            {/* <InputLeftAddon
                 padding={2}
                 children={
                   <Image
@@ -152,20 +154,20 @@ const Navbar = () => {
                   />
                 }
                 borderRadius="100px 0 0 100px"
-              />
-              <Input
+              /> */}
+            {/* <Input
                 ref={mref}
                 type="text"
                 placeholder="Enter Crypto Address Here..."
                 background={"white"}
                 borderRadius={100}
                 onChange={handleInputChange}
-              />
-              {/* <InputRightElement>
+              /> */}
+            {/* <InputRightElement>
               <SearchIcon color="gray.300" />
             </InputRightElement> */}
 
-              <InputRightAddon
+            {/* <InputRightAddon
                 padding={0}
                 children={
                   <IconButton
@@ -196,8 +198,8 @@ const Navbar = () => {
                   />
                 }
                 borderRadius="0 100px 100px 0"
-              />
-            </InputGroup>
+              /> */}
+            {/* </InputGroup> */}
             {/* <IconButton
               icon={<SearchIcon />}
               colorScheme="gray"
@@ -211,7 +213,7 @@ const Navbar = () => {
       </div>
 
       {!userName && (
-        <div className= "flex justify-center flex-row items-center">
+        <div className="flex justify-center flex-row items-center">
           <Button
             as={"a"}
             fontSize={"sm"}
@@ -222,7 +224,7 @@ const Navbar = () => {
           >
             Sign In
           </Button>
-          <div className= "w-[1rem]"></div>
+          <div className="w-[1rem]"></div>
           <Button
             as={"a"}
             display={{ base: "none", md: "inline-flex" }}
@@ -246,7 +248,7 @@ const Navbar = () => {
           <div className="user-bar flex flex-row h-[40px] ">
             {userName && <CgProfile className="profile" size={30} />}
 
-            <div className= "ml-[0.5rem] font-semibold">
+            <div className="ml-[0.5rem] font-semibold">
               {" "}
               {userName ? userName : "Sign In"}
             </div>
@@ -260,7 +262,7 @@ const Navbar = () => {
             {userName ? userName : "Sign In"}
           </div> */}
 
-              <div className= "ml-[0.5rem] font-semibold">
+              <div className="ml-[0.5rem] font-semibold">
                 {userName ? userName : "Sign Up"}
               </div>
             </div>

@@ -427,12 +427,12 @@ const GraphVisualization = () => {
   }, [cryptoAddress]);
 
   return (
-    <div className= "h-[calc(100vh-120px)] flex" ref={componentRef}>
-      {graphData.nodes.length === 0 && (
+    <div className="h-[calc(100vh-120px)] flex" ref={componentRef}>
+      {/* {graphData.nodes.length === 0 && (
         <div className= "h-[calc(100vh-120px)] flex justify-center w-full mt-[100px]">
           Enter Crypto Address To Explore
         </div>
-      )}
+      )} */}
       {graphData.nodes.length !== 0 && (
         <Graph
           graph={graphData}
