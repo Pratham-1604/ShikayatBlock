@@ -177,7 +177,7 @@ const ComplaintForm = () => {
         <div
           className={
             netComLoading
-              ? "fixed inset-0 w-full h-full bg-gray-400 bg-opacity-50 z-50 flex items-center justify-center"
+              ? "fixed inset-0 w-full h-full bg-gray-400 bg-opacity-50 z-[100] flex items-center justify-center"
               : "hidden"
           }
         >

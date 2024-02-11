@@ -21,6 +21,8 @@ const RightDrawer = ({ data: timeline, isOpen, onClose, handleUpdate }) => {
 
   const onSubmit = () => {
     console.log(selectedOption, remark);
+    onClose();
+
     handleUpdate(selectedOption, remark).then(() => {
       onClose();
     });
