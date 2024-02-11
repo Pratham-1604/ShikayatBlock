@@ -19,7 +19,7 @@ import { Progress } from "@chakra-ui/progress";
 import ImageUpload from "./csi_hack_components/ImageUpload";
 import { useNavigate } from "react-router-dom";
 
-const isDM = false;
+const isDM = true;
 
 const ComplaintForm = () => {
   const [authority, setAuthority] = useState(null);
@@ -134,7 +134,7 @@ const ComplaintForm = () => {
     // formData.append('suspectAccountType', values.suspectAccountType)
     console.log(file);
     console.log(formData);
-    if (isDM) {
+    if (isDM && false) {
       if (fd) {
         formData = fd;
       } else {
@@ -154,7 +154,6 @@ const ComplaintForm = () => {
         duration: 3000,
         isClosable: true,
       });
-      let isDM = false;
       if (isDM) {
         return;
       }

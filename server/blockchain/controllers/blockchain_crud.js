@@ -19,7 +19,11 @@ const {
 } = require("../artifacts/contracts/ComplaintContract.sol/ComplaintContract.json");
 const contractInstance = new ethers.Contract(contractAddress, abi, signer);
 
+const isDM2 = true;
 const newComplaint = async (req, res) => {
+  if (isDM2) {
+    console.log("here", req.body);
+  }
   try {
     const {
       userId,
@@ -43,7 +47,7 @@ const newComplaint = async (req, res) => {
       status,
       statusType,
       authorityName,
-      priority
+      Number.parseInt(priority)
     );
     const receipt = await tx.wait();
     const txHash = receipt.transactionHash;
@@ -65,7 +69,6 @@ const newComplaint = async (req, res) => {
       reporting_agency: " police",
       complaint_documents: "<url of marksheet or the actual marksheet>",
       agency_documents: "<optional field if agency responds with a document>",
-      complaint_title: "Lost Original Marsheet",
       complaint_description:
         " My original copy of marksheet has been lost. I want a new one.",
       complaint_created_date: " 2017-01-01 14:58:00",
@@ -164,7 +167,6 @@ const updateToAComplaint = async (req, res) => {
       reporting_agency: " police",
       complaint_documents: "<url of marksheet or the actual marksheet>",
       agency_documents: "<optional field if agency responds with a document>",
-      complaint_title: "Lost Original Marsheet",
       complaint_description:
         " My original copy of marksheet has been lost. I want a new one.",
       complaint_created_date: " 2017-01-01 14:58:00",

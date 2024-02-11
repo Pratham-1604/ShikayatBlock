@@ -13,6 +13,7 @@ const mfile =
   require("../db/Conn");
 // const User = require("../models/Schema");
 const User = require("../models/UserSchema");
+const Complaint = require("../models/MComplaintSchema");
 
 const isDM = false;
 
@@ -27,59 +28,95 @@ const handleComplaintRegistered = (req, res) => {
 };
 
 const handleComplaintCreated = async (req, res) => {
-  let data = req.body;
-  if (isDM) {
-    data = {
-      event_id: "eg_1",
-      event_type: "new_complaint_added",
-      user_id: "65c772a2b24737ce78451b52",
-      tx_hash: "txHash",
-      sender_address: "receipt.sender_address",
-      complaint_title: "title",
-      complaint_id: "finalId",
-      event_created_date: " 2017-01-01 14:56:00",
-      complaint_updated_at: " 2017-01-02 14:56:00",
-      complaint_status: " open",
-      complaint_type: " complaint",
-      complaint_created_by: " user_id",
-      reporting_agency: " police",
-      complaint_documents: "<url of marksheet or the actual marksheet>",
-      agency_documents: "<optional field if agency responds with a document>",
-      complaint_description:
-        " My original copy of marksheet has been lost. I want a new one.",
-      complaint_created_date: " 2017-01-01 14:58:00",
-      agency_response:
-        "We are verifying your details. A department official will contact you shortly.",
-      group_complaint_id: "test",
-      complaint_id: "fetre",
-    };
-  }
-  let group_complaint_id = data.group_complaint_id;
-  let complaint_id = data.complaint_id;
+  try {
+    {
+      let data = req.body;
+      console.log("data her ", data);
+      if (isDM) {
+        data = {
+          event_id: "eg_1",
+          event_type: "new_complaint_added",
+          user_id: "65c80f95cd4231f66167ae95",
+          tx_hash: "txHash",
+          sender_address: "receipt.sender_address",
+          complaint_title: "title",
+          complaint_id: "finalId",
+          event_created_date: " 2017-01-01 14:56:00",
+          complaint_updated_at: " 2017-01-02 14:56:00",
+          complaint_status: " open",
+          complaint_type: " complaint",
+          complaint_created_by: " user_id",
+          reporting_agency: " police",
+          complaint_documents: "<url of marksheet or the actual marksheet>",
+          agency_documents:
+            "<optional field if agency responds with a document>",
+          complaint_description:
+            " My original copy of marksheet has been lost. I want a new one.",
+          complaint_created_date: " 2017-01-01 14:58:00",
+          agency_response:
+            "We are verifying your details. A department official will contact you shortly.",
+          group_complaint_id: "test",
+          complaint_id: "fetre why this here",
+        };
+      }
 
-  const user = await User.findById(data.user_id);
-  // console.log("user", user);
-  if (!("events" in user)) {
-    user.events = [];
-  }
-  if (!("complaints" in user)) {
-    user.complaints = {};
-  }
+      const complaint = new Complaint({
+        data: data,
+        user_id: data.user_id,
+        complaint_id: data.complaint_id,
+        group_complaint_id: data.group_complaint_id ?? data.complaint_id,
+      });
+      complaint.save();
+      console.log("complaint_created");
+      return res.json({
+        message: "complaint_created",
+      });
 
-  if (!(group_complaint_id in user.complaints)) {
-    user.complaints[group_complaint_id] = [];
+      let group_complaint_id = data.group_complaint_id ?? data.complaint_id;
+      let complaint_id = data.complaint_id;
+
+      const user = await User.findById(data.user_id);
+      console.log("user", user.name);
+      // console.log("user", user);
+      if (!("events" in user)) {
+        user.events = [];
+      }
+      if (!user.complaints) {
+        console.log("no complaints");
+        user.complaints = {};
+      }
+      let cc = user.complaints;
+
+      if (!cc[group_complaint_id]) {
+        console.log("not group_com");
+        cc[group_complaint_id] = [];
+        console.log("user.complaints", cc);
+      }
+
+      cc[group_complaint_id].push(complaint_id);
+      user.complaints = cc;
+
+      console.log("user.complaints cp2", user.complaints);
+
+      console.log("user  group_complaint_id");
+
+      // user.complaints = {
+      //   0: [9, 4],
+      //   11: [4, 6],
+      // };
+      user.events.push(data);
+      user.save();
+      console.log("complaint_created");
+      // emit to front end too
+      res.json({
+        message: "complaint_created",
+      });
+    }
+  } catch (error) {
+    console.log("error", error);
+    // res.status(500).json("error", error);
+    res.json({ status: 0 });
   }
-
-  user.complaints[group_complaint_id].push(complaint_id);
-  console.log("user group_complaint_id");
-
-  user.events.push(data);
-  user.save();
-  console.log("complaint_created");
-  // emit to front end too
-  res.json({
-    message: "complaint_created",
-  });
 };
 
 const handleAddFile = (req, res) => {
@@ -90,7 +127,7 @@ const handleComplaintUpdate = (req, res) => {
   const data = {
     event_id: "eg_1",
     event_type: "new_complaint_added",
-    user_id: userId,
+    user_id: "65c80f95cd4231f66167ae95",
     event_created_date: " 2017-01-01 14:56:00",
     complaint_updated_at: " 2017-01-02 14:56:00",
     complaint_status: " open",
@@ -123,57 +160,63 @@ const handleComplaintUpdate = (req, res) => {
 };
 
 router.post("/", async (req, res) => {
-  const sampleBody =
-    '{"event_id":"eg_1","event_type":"complaint_update","event_created_date":"2017-01-01 14:56:00","complaint_updated_at":"2017-01-02 14:56:00","complaint_status":"open","complaint_type":"complaint","complaint_created_by":"user_id","reporting_agency":"police","complaint_documents":"<url_of_marksheet_or_the_actual_marksheet>","agency_documents":"<optional_field_if_agency_responds_with_a_document>","complaint_title":"Lost Original Marsheet","complaint_description":"My original copy of marksheet has been lost. I want a new one.","complaint_created_date":"2017-01-01 14:58:00","agency_response":"We are verifying your details. A department official will contact you shortly."}';
-  const sampleBodyObj = JSON.parse(sampleBody);
-  // res.send("Hello world from the server rotuer js");
+  try {
+    const sampleBody =
+      '{"event_id":"eg_1","event_type":"complaint_update","event_created_date":"2017-01-01 14:56:00","complaint_updated_at":"2017-01-02 14:56:00","complaint_status":"open","complaint_type":"complaint","complaint_created_by":"user_id","reporting_agency":"police","complaint_documents":"<url_of_marksheet_or_the_actual_marksheet>","agency_documents":"<optional_field_if_agency_responds_with_a_document>","complaint_title":"Lost Original Marsheet","complaint_description":"My original copy of marksheet has been lost. I want a new one.","complaint_created_date":"2017-01-01 14:58:00","agency_response":"We are verifying your details. A department official will contact you shortly."}';
+    const sampleBodyObj = JSON.parse(sampleBody);
+    // res.send("Hello world from the server rotuer js");
 
-  const {
-    event_id,
-    event_type,
-    event_created_date,
-    complaint_updated_at,
-    complaint_status,
-    complaint_type,
-    complaint_created_by,
-    reporting_agency,
-    complaint_documents,
-    agency_documents,
-    complaint_title,
-    complaint_description,
-    complaint_created_date,
-    agency_response,
-  } = req.body;
+    const {
+      event_id,
+      event_type,
+      event_created_date,
+      complaint_updated_at,
+      complaint_status,
+      complaint_type,
+      complaint_created_by,
+      reporting_agency,
+      complaint_documents,
+      agency_documents,
+      complaint_title,
+      complaint_description,
+      complaint_created_date,
+      agency_response,
+    } = req.body;
 
-  switch (event_type) {
-    case "ingest_form":
-      handleIngestForm(req, res);
-      break;
-    case "complaint_registered":
-      handleComplaintRegistered(req, res);
-      break;
-    case "complaint_created":
-    case "new_complaint_added":
-      handleComplaintCreated(req, res);
-      break;
-    // case "complaint_update":
-    //   console.log("complaint_update");
-    //   break;
-    // case "complaint_created":
-    //   console.log("complaint_created");
-    //   break;
-    // case "complaint_closed":
-    //   console.log("complaint_closed");
-    //   break;
-    case "add_file":
-      handleAddFile(req, res);
-      break;
-    case "complaint_update":
-      handleComplaintUpdate(req, res);
-      break;
-    default:
-      console.log("default");
-      res.send("default");
+    switch (event_type) {
+      case "ingest_form":
+        handleIngestForm(req, res);
+        break;
+      case "complaint_registered":
+        handleComplaintRegistered(req, res);
+        break;
+      case "complaint_created":
+      case "new_complaint_added":
+        handleComplaintCreated(req, res);
+        break;
+      // case "complaint_update":
+      //   console.log("complaint_update");
+      //   break;
+      // case "complaint_created":
+      //   console.log("complaint_created");
+      //   break;
+      // case "complaint_closed":
+      //   console.log("complaint_closed");
+      //   break;
+      case "add_file":
+        handleAddFile(req, res);
+        break;
+      case "complaint_update":
+        handleComplaintUpdate(req, res);
+        break;
+      default:
+        console.log("default");
+        res.send("default");
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: error,
+    });
   }
 });
 
