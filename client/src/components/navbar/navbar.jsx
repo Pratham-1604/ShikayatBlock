@@ -69,7 +69,7 @@ export const regexes = {
 };
 
 const Navbar = () => {
-  const [userRole, setUserRole] = useState("investigator");
+  const [userRole, setUserRole] = useState("authority");
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("profile"));
     console.log("userData in sidebar:", userData);

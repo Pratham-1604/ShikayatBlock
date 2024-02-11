@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CopyIcon, CheckIcon, WarningIcon, CloseIcon } from "@chakra-ui/icons";
 import {
@@ -15,6 +15,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import RightDrawer from "./RightDrawer";
+import APIRequests from "../../api";
 
 const status = {
   warn: {
@@ -55,9 +56,17 @@ const timeline = [
 
 const AdminInnerComplaint = () => {
   const [data, setData] = useState([]);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { complaint_id } = useParams();
+
+  useEffect(() => {
+    APIRequests.getComplaint(complaint_id).then((res) => {
+      setData(res.data);
+      console.log("com", res.data);
+    });
+  }, [complaint_id]);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box p={8}>
@@ -121,14 +130,16 @@ const AdminInnerComplaint = () => {
                   <dt className="text-md font-medium text-[#0262AF]">
                     Name of Complainant
                   </dt>
-                  <dd className="mt-1 text-md text-gray-900">Margot Foster</dd>
+                  <dd className="mt-1 text-md text-gray-900">
+                    {data.user_id ? data.user_id.name : null}
+                  </dd>
                 </div>
                 <div className="sm:col-span-1">
                   <dt className="text-md font-medium text-[#0262AF]">
                     Complaint Type
                   </dt>
                   <dd className="mt-1 text-md text-gray-900">
-                    Backend Developer
+                    {data.data.complaint_type}
                   </dd>
                 </div>
                 <div className="sm:col-span-1">
@@ -136,7 +147,7 @@ const AdminInnerComplaint = () => {
                     Authority Name
                   </dt>
                   <dd className="mt-1 text-md text-gray-900">
-                    margotfoster@example.com
+                    {data.data.reporting_authority}
                   </dd>
                 </div>
 

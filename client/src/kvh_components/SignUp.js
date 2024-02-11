@@ -208,7 +208,7 @@ export default function SignupCardOg() {
                     <FormLabel>{t("userRole")}</FormLabel>
                     <Field name="userRole" as={Select}>
                       <option value="">{t("signup.selectRole")}</option>
-                      <option value="investigator">{"Investigator"}</option>
+                      <option value="authority">{"Authority"}</option>
                       <option value="citizen">{"Citizen"}</option>
                     </Field>
                     <ErrorMessage

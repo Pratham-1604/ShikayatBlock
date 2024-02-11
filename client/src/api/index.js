@@ -127,6 +127,16 @@ class APIRequests {
     console.log("body", body);
     return await API.post("/api/complaint/get_authority", body);
   };
+
+  // get_complaints
+  static getComplaints = async () => {
+    return await API.get("/api/complaint/get_complaints");
+  };
+
+  // /get_complaints/:id
+  static getComplaint = async (id) => {
+    return await API.get(`/api/complaint/get_complaints/${id}`);
+  };
 }
 
 export default APIRequests;

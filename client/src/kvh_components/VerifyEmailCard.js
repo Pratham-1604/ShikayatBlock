@@ -61,7 +61,7 @@ export default function VerifyEmailForm({ open, handleClose, email }) {
           })
         );
 
-        if (res.data.user_role && res.data.user_role === "investigator") {
+        if (res.data.user_role && res.data.user_role === "authority") {
           navigate("/dashboard");
         } else {
           navigate("/blogs");

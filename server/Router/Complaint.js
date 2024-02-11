@@ -16,9 +16,9 @@ const Complaint = require("../models/MComplaintSchema");
 
 complaintR.get("/get_complaints", async (req, res) => {
   const userID = req.userID;
-  const userPrivilege = req.userPrivilege;
+  const userRole = req.userRole;
   let complaints;
-  if (userPrivilege != 2) {
+  if (userRole != "citizen") {
     complaints = await Complaint.find();
     // return res.json(allComplaints);
   } else {
@@ -29,7 +29,7 @@ complaintR.get("/get_complaints", async (req, res) => {
     uniqueGIDS.add(complaint.group_complaint_id);
   });
 
-  const res = [];
+  const resData = [];
 
   for (let gid of uniqueGIDS) {
     const groupedComplaints = await Complaint.find({ group_complaint_id: gid });
@@ -38,13 +38,15 @@ complaintR.get("/get_complaints", async (req, res) => {
       data.push(complaint);
     });
 
-    res.push({
+    resData.push({
       group_complaint_id: gid,
       complaints: data,
     });
   }
 
-  res.json(res);
+  res.json({
+    data: resData,
+  });
 
   // res.json(complaints);
 });
@@ -54,6 +56,8 @@ complaintR.get("/get_complaints/:id", async (req, res) => {
   const complaint = await Complaint.findOne({ complaint_id: req.params.id })
     .populate("user_id", "name email")
     .exec();
+
+  console.log("Complaint: ", complaint);
   res.json(complaint);
 });
 

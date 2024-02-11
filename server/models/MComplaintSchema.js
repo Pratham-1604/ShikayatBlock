@@ -6,7 +6,7 @@ const complaintSchema = new mongoose.Schema({
   event_type: String,
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Reference to the User model
+    ref: "USER", // Reference to the User model
   },
   data: Object,
   tx_hash: String,

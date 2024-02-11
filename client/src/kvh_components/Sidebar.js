@@ -19,7 +19,7 @@ import {
 import { useLocation } from "react-router-dom";
 
 const Sidebar = () => {
-  const [userRole, setUserRole] = useState("investigator");
+  const [userRole, setUserRole] = useState("authority");
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("profile"));
     console.log("userData in sidebar:", userData);
@@ -38,7 +38,7 @@ const Sidebar = () => {
       left="0"
       top="0"
     >
-      {userRole === "investigator" && (
+      {userRole === "authority" && (
         <VStack spacing="4" align="flex-start">
           {/* <SidebarLink icon={FiHome} link="home" label="Home" /> */}
           <SidebarLink
