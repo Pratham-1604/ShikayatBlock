@@ -16,8 +16,14 @@ const Complaint = require("../models/MComplaintSchema");
 
 complaintR.get("/get_complaints", async (req, res) => {
   const userID = req.userID;
-  console.log("User ID: ", userID);
-  const complaints = await Complaint.find({ user_id: userID });
+  const userPrivilege = req.userPrivilege;
+  let complaints;
+  if (userPrivilege != 2) {
+    complaints = await Complaint.find();
+    // return res.json(allComplaints);
+  } else {
+    complaints = await Complaint.find({ user_id: userID });
+  }
   const uniqueGIDS = new Set();
   complaints.forEach((complaint) => {
     uniqueGIDS.add(complaint.group_complaint_id);
@@ -44,7 +50,7 @@ complaintR.get("/get_complaints", async (req, res) => {
 });
 
 // get complaint
-complaintR.get("/get_complaint/:id", async (req, res) => {
+complaintR.get("/get_complaints/:id", async (req, res) => {
   const complaint = await Complaint.findOne({ complaint_id: req.params.id })
     .populate("user_id", "name email")
     .exec();
