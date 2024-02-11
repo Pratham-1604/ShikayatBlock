@@ -49,10 +49,10 @@ contract ComplaintContract {
         string memory _description,
         string memory _complaintType,
         string memory _ipfs,
+        string memory _date,
         string memory _status,
         string memory _statusType,
         string memory _authorityName,
-        string memory _date,
         uint256 _priority
     ) public {
         // Incrementing complaint count
@@ -68,8 +68,8 @@ contract ComplaintContract {
             description: _description,
             complaintType: _complaintType,
             ipfsHash: _ipfs,
-            status: _status,
             date: _date,
+            status: _status,
             statusType: _statusType,
             authorityName: _authorityName,
             priority: _priority
@@ -105,10 +105,10 @@ contract ComplaintContract {
         string memory _description,
         string memory _complaintType,
         string memory _ipfs,
+        string memory _date,
         string memory _status,
         string memory _statusType,
         string memory _authorityName,
-        string memory _date,
         uint256 _priority
     ) public {
         // Incrementing complaint count for the new complaint object
@@ -123,8 +123,8 @@ contract ComplaintContract {
             description: _description,
             complaintType: _complaintType,
             ipfsHash: _ipfs,
-            status: _status,
             date: _date,
+            status: _status,
             statusType: _statusType,
             authorityName: _authorityName,
             priority: _priority

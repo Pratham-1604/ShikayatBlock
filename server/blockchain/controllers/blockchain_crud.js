@@ -21,9 +21,9 @@ const newComplaint = async (req, res) => {
       userId,
       subject,
       description,
+      complaintType,
       ipfs,
       status,
-      complaintType,
       statusType,
       authorityName,
       priority,
@@ -38,7 +38,7 @@ const newComplaint = async (req, res) => {
       status,
       statusType,
       authorityName,
-      new Date().toISOString(),
+      new Date().toISOString().substring(0, 10),
       priority
     );
     const receipt = await tx.wait();
@@ -82,9 +82,11 @@ const newComplaint = async (req, res) => {
         console.error("Error:", error);
       });
     console.log("done");
-    res
-      .status(200)
-      .json({ success: true, tx: txHash, complaintGroupId: complaint1[1] });
+    res.status(200).json({
+      success: true,
+      tx: txHash,
+      complaintGroupId: parseInt(complaint1[1]),
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -97,6 +99,7 @@ const getComplaintDetail = async (req, res) => {
     // const getId = await contractInstance.getLatestComplaintId();
     // const finalId = parseInt(getId);
     // console.log(finalId);
+    
     console.log(complaint);
     const formattedObject = {
       userId: complaint[0],
@@ -105,14 +108,15 @@ const getComplaintDetail = async (req, res) => {
       description: complaint[3],
       complaintType: complaint[4],
       ipfs: complaint[5],
-      authorityName: complaint[6],
-      date: complaint[7],
-      status: complaint[8],
-      statusType: complaint[9],
+      status: complaint[6],
+      statusType: complaint[7],
+      authorityName: complaint[8],
+      date: complaint[9],
       priority: parseInt(complaint[10]),
     };
 
-    console.log(formattedObject);
+    // console.log(formattedObject);
+    // res.status(200).json(complaint);
     res.status(200).json(formattedObject);
   } catch (error) {
     res.status(500).send(error.message);
@@ -143,7 +147,7 @@ const updateToAComplaint = async (req, res) => {
       status,
       statusType,
       authorityName,
-      new Date().toISOString(),
+      new Date().toISOString().substring(0, 10),
       priority
     );
     const receipt = await tx.wait();
@@ -198,9 +202,9 @@ const getComplaintByComplaintType = async (req, res) => {
       complaintType
     );
 
-    // const hexList = array.map((item) => parseInt(item.hex));
+    const hexList = array.map((item) => parseInt(item.hex));
 
-    res.status(200).json(tx);
+    res.status(200).json({ hexList: hexList });
   } catch (err) {
     res.status(500).send("Get Complaint By Complaint Type Error\n", err);
   }
