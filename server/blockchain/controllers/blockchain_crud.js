@@ -55,7 +55,7 @@ const newComplaint = async (req, res) => {
       sender_address: receipt.sender_address,
       complaint_title: subject,
       complaint_id: finalId,
-      complaint_group_id: parseInt(complaint1[1]),
+      group_complaint_id: parseInt(complaint1[1]),
       event_created_date: " 2017-01-01 14:56:00",
       complaint_updated_at: " 2017-01-02 14:56:00",
       complaint_status: " open",
@@ -73,20 +73,20 @@ const newComplaint = async (req, res) => {
     };
     const url = "https://c4f0-49-248-167-18.ngrok-free.app/api";
 
-    axios
-      .post(url + "/webhook", obj)
-      .then((response) => {
-        console.log("Response:", response.status);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    console.log("done");
-    res.status(200).json({
-      success: true,
-      tx: txHash,
-      complaintGroupId: parseInt(complaint1[1]),
-    });
+    // axios
+    //   .post(url + "/webhook", obj)
+    //   .then((response) => {
+    //     console.log("Response:", response.status);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
+    // console.log("done");
+    // res.status(200).json({
+    //   success: true,
+    //   tx: txHash,
+    //   complaintGroupId: parseInt(complaint1[1]),
+    // });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -99,7 +99,7 @@ const getComplaintDetail = async (req, res) => {
     // const getId = await contractInstance.getLatestComplaintId();
     // const finalId = parseInt(getId);
     // console.log(finalId);
-    
+
     console.log(complaint);
     const formattedObject = {
       userId: complaint[0],
@@ -179,14 +179,14 @@ const updateToAComplaint = async (req, res) => {
         "We are verifying your details. A department official will contact you shortly.",
     };
     const url = "https://c4f0-49-248-167-18.ngrok-free.app/api";
-    axios
-      .post(url + "/webhook", obj)
-      .then((response) => {
-        console.log("Response:", response.status);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    // axios
+    //   .post(url + "/webhook", obj)
+    //   .then((response) => {
+    //     console.log("Response:", response.status);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error:", error);
+    //   });
     console.log("done");
     res.status(200).json({ success: true, tx: txHash });
   } catch (error) {
@@ -225,10 +225,27 @@ const getComplaintByAuthorityName = async (req, res) => {
   }
 };
 
+const getComplaintInfoFromHash = async (req, res) => {
+  try {
+    const transactionHash = req.params.hash;
+    console.log(transactionHash);
+    const txDetails = await provider.getTransaction(transactionHash);
+
+    if (!txDetails) {
+      return res.status(404).json({ message: "Transaction not found" });
+    }
+
+    res.status(200).json({ transaction: txDetails });
+  } catch (error) {
+    res.status(500).send("Get Complaint Info from Hash error \n", error);
+  }
+};
+
 module.exports = {
   newComplaint,
   getComplaintDetail,
   updateToAComplaint,
   getComplaintByAuthorityName,
   getComplaintByComplaintType,
+  getComplaintInfoFromHash,
 };

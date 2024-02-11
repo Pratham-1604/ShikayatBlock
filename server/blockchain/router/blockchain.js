@@ -5,7 +5,7 @@ const {
   updateToAComplaint,
   getComplaintByAuthorityName,
   getComplaintByComplaintType,
-  getComplaintInfoByTxHash,
+  getComplaintInfoFromHash
 } = require("../controllers/blockchain_crud");
 
 // Endpoint to create a new complaint
@@ -23,7 +23,7 @@ router.post("/filterByAuthorityName", getComplaintByAuthorityName);
 // Endpoint to get filtered by complaint type
 router.post("/filterByComplaintType", getComplaintByComplaintType);
 
-// // Endpoint to get transaction info by transaction hash
-// router.post("/getInfoFromHash", getComplaintInfoByTxHash);
+// Endpoint to get transaction info by transaction hash
+router.post("/getInfoFromHash/:hash", getComplaintInfoFromHash);
 
 module.exports = router;
