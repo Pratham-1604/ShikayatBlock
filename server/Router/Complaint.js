@@ -53,6 +53,7 @@ complaintR.get("/get_complaints", async (req, res) => {
   if (userRole != "citizen") {
     // complaints = await Complaint.find();
     complaints = await Complaint.find();
+    console.log("Complaints: ", complaints);
     // return res.json(allComplaints);
   } else {
     complaints = await Complaint.find();
@@ -80,7 +81,7 @@ complaintR.get("/get_complaints/:id", async (req, res) => {
   const newArr = [];
   resData.forEach((group) => {
     group.complaints.forEach((complaint) => {
-      // console.log("Complaint: from loop ", complaint);
+      console.log("Complaint: from loop ", complaint);
       if (complaint.data.complaint_group_id == req.params.id) {
         newArr.push(complaint);
       }
@@ -129,10 +130,11 @@ complaintR.post("/create", upload.single("file"), async (req, res) => {
   }
 
   let storedhash;
-  if (isDM) {
+  if (!isDM) {
     storedhash = await saveFile(filePath);
+  } else {
+    storedhash = "test";
   }
-  storedhash = "test";
   console.log("Response Stored Hash : ", storedhash);
 
   try {

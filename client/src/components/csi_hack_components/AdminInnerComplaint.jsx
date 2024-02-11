@@ -31,30 +31,31 @@ const status = {
     iconBackground: "bg-red-400",
   },
 };
-const timeline = [
-  {
-    status: "Applied to",
-    date: "Sep 20",
-    status_type: "success",
-  },
-  {
-    status: "Advanced to phone screening by",
-    date: "Sep 22",
-    status_type: "warn",
-  },
-  {
-    status: "Completed phone screening with",
-    date: "Sep 28",
-    status_type: "fail",
-  },
-  {
-    status: "Advanced to interview by",
-    date: "Sep 30",
-    status_type: "warn",
-  },
-];
+// const timeline = [
+//   {
+//     status: "Applied to",
+//     date: "Sep 20",
+//     status_type: "success",
+//   },
+//   {
+//     status: "Advanced to phone screening by",
+//     date: "Sep 22",
+//     status_type: "warn",
+//   },
+//   {
+//     status: "Completed phone screening with",
+//     date: "Sep 28",
+//     status_type: "fail",
+//   },
+//   {
+//     status: "Advanced to interview by",
+//     date: "Sep 30",
+//     status_type: "warn",
+//   },
+// ];
 
-const AdminInnerComplaint = () => {
+const AdminInnerComplaint = ({ isUser }) => {
+  const [timeline, setTimeline] = useState([]);
   const [data, setData] = useState(null);
   const [fileUrl, setFileUrl] = useState("#");
 
@@ -77,6 +78,22 @@ const AdminInnerComplaint = () => {
       console.log("com", res.data.gd);
 
       console.log("com full data", res.data);
+      const timeline = res.data.gd.map((event) => {
+        console.log("w po", event);
+        return {
+          status: event.data.complaint_status,
+          date: new Date(event.data.complaint_created_date).toLocaleDateString(
+            "en-IN",
+            {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            }
+          ),
+          status_type: event.data.statusType,
+        };
+      });
+      setTimeline(timeline);
     });
   }, [complaint_id]);
 
@@ -92,47 +109,55 @@ const AdminInnerComplaint = () => {
           <Heading mb={4}>{"(" + complaint_id + ")"}</Heading>
         </div>
 
-        <Button onClick={onOpen} colorScheme="green">
-          Add Remark
-        </Button>
+        {isUser ? null : (
+          <Button onClick={onOpen} colorScheme="green">
+            Add Remark
+          </Button>
+        )}
       </div>
       <Box className="flex flex-row-reverse">
         <div className="w-[70%] h-full">
           <div className="flow-root max-h-screen overflow-y-scroll remove-scrollbar">
             <ul role="list" className="mb-4 mx-10 mt-4">
-              {timeline.map((event, eventIdx) => (
-                <li key={event.id}>
-                  <div className="relative pb-8">
-                    {eventIdx !== timeline.length - 1 ? (
-                      <span
-                        className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                        aria-hidden="true"
-                      />
-                    ) : null}
-                    <div className="relative flex space-x-3">
-                      <div className="text-white">
-                        <span
-                          className={`${
-                            status[`${event.status_type}`].iconBackground
-                          } h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white`}
-                        >
-                          {status[`${event.status_type}`].icon}
-                        </span>
-                      </div>
-                      <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                        <div>
-                          <p className="text-sm text-gray-500">
-                            {event.status}{" "}
-                          </p>
+              {timeline &&
+                timeline.map((event, eventIdx) => {
+                  console.log("event", event);
+                  return (
+                    <li key={event.id}>
+                      <div className="relative pb-8">
+                        {eventIdx !== timeline.length - 1 ? (
+                          <span
+                            className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                            aria-hidden="true"
+                          />
+                        ) : null}
+                        <div className="relative flex space-x-3">
+                          <div className="text-white">
+                            <span
+                              className={`${
+                                status[`${event.status_type}`].iconBackground
+                              } h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white`}
+                            >
+                              {status[`${event.status_type}`].icon}
+                            </span>
+                          </div>
+                          <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                            <div>
+                              <p className="text-sm text-gray-500">
+                                {event.status}{" "}
+                              </p>
+                            </div>
+                            <div className="text-right text-sm whitespace-nowrap text-gray-500">
+                              <time dateTime={event.datetime}>
+                                {event.date}
+                              </time>
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                          <time dateTime={event.datetime}>{event.date}</time>
-                        </div>
                       </div>
-                    </div>
-                  </div>
-                </li>
-              ))}
+                    </li>
+                  );
+                })}
             </ul>
           </div>
         </div>

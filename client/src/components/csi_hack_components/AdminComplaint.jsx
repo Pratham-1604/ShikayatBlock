@@ -160,8 +160,8 @@ const AdminComplaint = () => {
     APIRequests.getComplaints()
       .then((res) => {
         if (active) {
-          setData(res.data.complaint.data);
-          console.log(res.data);
+          console.log("Data: ", res.data);
+          setData(res.data.data);
         }
         active = false;
       })
@@ -187,6 +187,7 @@ const AdminComplaint = () => {
         <div className="bg-white shadow overflow-hidden sm:rounded-md">
           <ul role="list" className="divide-y divide-gray-200">
             {data.map((positions) => {
+              console.log("positions", positions);
               let position = positions.complaints[0].data;
 
               if (!position) return null;
