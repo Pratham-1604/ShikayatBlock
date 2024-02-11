@@ -61,8 +61,9 @@ const AdminInnerComplaint = () => {
   const { complaint_id } = useParams();
 
   const handleUpdate = (selectedOption, remark) => {
+    console.log("data", data.complaint_group_id);
     console.log(selectedOption, remark);
-    return APIRequests.updateComplaint(complaint_id, {
+    return APIRequests.updateComplaint(data.complaint_group_id, {
       selectedOption,
       remark,
       ...data.data,
@@ -72,8 +73,10 @@ const AdminInnerComplaint = () => {
 
   useEffect(() => {
     APIRequests.getComplaint(complaint_id).then((res) => {
-      setData(res.data);
-      console.log("com", res.data);
+      setData(res.data.complaint);
+      console.log("com", res.data.gd);
+
+      console.log("com full data", res.data);
     });
   }, [complaint_id]);
 

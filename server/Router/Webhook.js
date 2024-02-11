@@ -55,7 +55,7 @@ const handleComplaintCreated = async (req, res) => {
           complaint_created_date: " 2017-01-01 14:58:00",
           agency_response:
             "We are verifying your details. A department official will contact you shortly.",
-          group_complaint_id: "test",
+          complaint_group_id: "test",
           complaint_id: "fetre why this here",
         };
       }
@@ -64,7 +64,7 @@ const handleComplaintCreated = async (req, res) => {
         data: data,
         user_id: data.user_id,
         complaint_id: data.complaint_id,
-        group_complaint_id: data.group_complaint_id ?? data.complaint_id,
+        complaint_group_id: data.complaint_group_id ?? data.complaint_id,
       });
       complaint.save();
       console.log("complaint_created");
@@ -72,7 +72,7 @@ const handleComplaintCreated = async (req, res) => {
         message: "complaint_created",
       });
 
-      let group_complaint_id = data.group_complaint_id ?? data.complaint_id;
+      let complaint_group_id = data.complaint_group_id ?? data.complaint_id;
       let complaint_id = data.complaint_id;
 
       const user = await User.findById(data.user_id);
@@ -87,18 +87,18 @@ const handleComplaintCreated = async (req, res) => {
       }
       let cc = user.complaints;
 
-      if (!cc[group_complaint_id]) {
+      if (!cc[complaint_group_id]) {
         console.log("not group_com");
-        cc[group_complaint_id] = [];
+        cc[complaint_group_id] = [];
         console.log("user.complaints", cc);
       }
 
-      cc[group_complaint_id].push(complaint_id);
+      cc[complaint_group_id].push(complaint_id);
       user.complaints = cc;
 
       console.log("user.complaints cp2", user.complaints);
 
-      console.log("user  group_complaint_id");
+      console.log("user  complaint_group_id");
 
       // user.complaints = {
       //   0: [9, 4],
@@ -207,6 +207,7 @@ router.post("/", async (req, res) => {
         handleAddFile(req, res);
         break;
       case "complaint_update":
+      case "complaint_updated":
         handleComplaintUpdate(req, res);
         break;
       default:

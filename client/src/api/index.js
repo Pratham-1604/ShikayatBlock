@@ -149,7 +149,7 @@ class APIRequests {
       status: data.remark,
       // statusType: data.status_type,
       statusType: data.selectedOption,
-      authorityName: data.reporting_authority,
+      authorityName: data.reporting_agency,
       priority: data.priority,
       // agency_response: data.remark,
     };

@@ -129,6 +129,7 @@ const getComplaintDetail = async (req, res) => {
 
 const updateToAComplaint = async (req, res) => {
   console.log("here in update");
+  // send group id
   try {
     const id = parseInt(req.params.id);
     const {
@@ -167,7 +168,7 @@ const updateToAComplaint = async (req, res) => {
       sender_address: receipt.sender_address,
       complaint_title: subject,
       complaint_id: finalId,
-      group_complaint_id: id,
+      complaint_group_id: id,
       event_created_date: new Date().toISOString(),
       complaint_updated_at: "2017-01-02 14:56:00",
       // complaint_status: " open",

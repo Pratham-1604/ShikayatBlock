@@ -160,8 +160,8 @@ const AdminComplaint = () => {
     APIRequests.getComplaints()
       .then((res) => {
         if (active) {
-          setData(res.data.data);
-          console.log(res.data.data);
+          setData(res.data.complaint.data);
+          console.log(res.data);
         }
         active = false;
       })
@@ -213,7 +213,9 @@ const AdminComplaint = () => {
                         <button
                           type="button"
                           className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                          onClick={() => onButtonClick(position.complaint_id)}
+                          onClick={() =>
+                            onButtonClick(position.complaint_group_id)
+                          }
                         >
                           View Complaint
                         </button>

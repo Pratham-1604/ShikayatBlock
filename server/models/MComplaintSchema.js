@@ -24,7 +24,7 @@ const complaintSchema = new mongoose.Schema({
   complaint_description: String,
   complaint_created_date: Date,
   agency_response: String,
-  group_complaint_id: String,
+  complaint_group_id: String,
 });
 
 // Create Complaint model
