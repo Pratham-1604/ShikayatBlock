@@ -41,15 +41,19 @@ const Sidebar = () => {
       {userRole === "authority" && (
         <VStack spacing="4" align="flex-start">
           {/* <SidebarLink icon={FiHome} link="home" label="Home" /> */}
-          <SidebarLink
+          {/* <SidebarLink
             icon={AiFillDashboard}
             link="dashboard"
             label="Dashboard"
-          />
-          <SidebarLink icon={FiCalendar} link="boards" label="Boards" />
+          /> */}
+          {/* <SidebarLink icon={FiCalendar} link="boards" label="Boards" /> */}
           {/* <SidebarLink icon={FiUsers} link="users" label="Users" /> */}
-          <SidebarLink icon={FiList} link="labels" label="Labels" />
-          <SidebarLink icon={FiSearch} link="monitoring" label="Monitoring" />
+          <SidebarLink
+            icon={FiList}
+            link={userRole === "authority" ? "admin/complaints" : "complaints"}
+            label="Complaints"
+          />
+          {/* <SidebarLink icon={FiSearch} link="monitoring" label="Monitoring" /> */}
           {/* <SidebarLink icon={FiBook} link="blogs" label="Blogs" /> */}
           <SidebarLink icon={FiSettings} link="auth/signin" label="Log Out" />
         </VStack>
