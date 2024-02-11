@@ -56,6 +56,7 @@ const timeline = [
 
 const AdminInnerComplaint = () => {
   const [data, setData] = useState(null);
+  const [fileUrl, setFileUrl] = useState("#");
 
   const { complaint_id } = useParams();
 
@@ -153,15 +154,13 @@ const AdminInnerComplaint = () => {
                   </div>
 
                   <div className="sm:col-span-2">
-                    <dt className="text-md font-medium text-[#0262AF]">
+                    <dt className="text-md font-medium text-[#0262AF] min-w-[60vw]">
                       Complaint Description
                     </dt>
                     <dd className="mt-1 text-md text-gray-900">
-                      Fugiat ipsum ipsum deserunt culpa aute sint do nostrud
-                      anim incididunt cillum culpa consequat. Excepteur qui
-                      ipsum aliquip consequat sint. Sit id mollit nulla mollit
-                      nostrud in ea officia proident. Irure nostrud pariatur
-                      mollit ad adipisicing reprehenderit deserunt qui eu.
+                      {/* complaint_description
+                       */}
+                      {data.data.complaint_description}
                     </dd>
                   </div>
                   <div className="sm:col-span-2">
@@ -185,7 +184,7 @@ const AdminInnerComplaint = () => {
                           </div>
                           <div className="ml-4 flex-shrink-0">
                             <a
-                              href="#"
+                              href={data.data.file_url}
                               className="font-medium text-indigo-600 hover:text-indigo-500"
                             >
                               View

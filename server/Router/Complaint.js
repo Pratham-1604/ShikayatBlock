@@ -64,6 +64,8 @@ complaintR.get("/get_complaints/:id", async (req, res) => {
 complaintR.post("/create", upload.single("file"), async (req, res) => {
   const { complaint_title, complaint_description, authority, complaint_type } =
     req.body;
+
+  console.log("body of create complaint", req.body);
   const priority = await getPriorityFromComplaint(complaint_description);
 
   const filePath = req.file.path;
