@@ -108,7 +108,8 @@ const RightDrawer = ({ data: timeline, isOpen, onClose, handleUpdate }) => {
                     htmlFor="warn"
                     className="block w-full h-full py-2 text-center text-white font-semibold"
                   >
-                    Warn
+                    {/* Warn */}
+                    Info
                   </label>
                 </div>
                 <div

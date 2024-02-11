@@ -69,7 +69,7 @@ const Sidebar = () => {
           {/* <SidebarLink icon={FiCalendar} link="boards" label="Boards" /> */}
           {/* <SidebarLink icon={FiUsers} link="users" label="Users" /> */}
           {/* <SidebarLink icon={FiList} link="labels" label="Labels" /> */}
-
+          <SidebarLink icon={FiList} link={"complaints"} label="Complaints" />
           <SidebarLink icon={FiBook} link="blogs" label="Blogs" />
           <SidebarLink
             icon={FiSearch}

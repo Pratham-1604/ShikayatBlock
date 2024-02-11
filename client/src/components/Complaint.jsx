@@ -237,7 +237,7 @@ const ComplaintForm = () => {
                     mb={4}
                     isInvalid={errors.authority && touched.authority}
                   >
-                    <FormLabel>Authority</FormLabel>
+                    <FormLabel>Report To</FormLabel>
                     <Field
                       as={Input}
                       name="authority"
