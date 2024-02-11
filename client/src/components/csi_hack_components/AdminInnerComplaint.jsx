@@ -60,6 +60,16 @@ const AdminInnerComplaint = () => {
 
   const { complaint_id } = useParams();
 
+  const handleUpdate = (selectedOption, remark) => {
+    console.log(selectedOption, remark);
+    return APIRequests.updateComplaint(complaint_id, {
+      selectedOption,
+      remark,
+      ...data.data,
+      // data: data.data,
+    });
+  };
+
   useEffect(() => {
     APIRequests.getComplaint(complaint_id).then((res) => {
       setData(res.data);
@@ -73,7 +83,7 @@ const AdminInnerComplaint = () => {
     <Box p={8}>
       <div className="flex justify-between items-center">
         <div className="flex space-x-2">
-          <Heading mb={4}>Complaint Title</Heading>
+          <Heading mb={4}>{data ? data.data.complaint_title : null}</Heading>
           {/* <Heading mb={4}>-</Heading> */}
           {/* <p>-</p> */}
           <Heading mb={4}>{"(" + complaint_id + ")"}</Heading>
@@ -199,7 +209,12 @@ const AdminInnerComplaint = () => {
             </div>
           </div>
         ) : null}
-        <RightDrawer isOpen={isOpen} onClose={onClose} data={timeline} />
+        <RightDrawer
+          isOpen={isOpen}
+          onClose={onClose}
+          data={timeline}
+          handleUpdate={handleUpdate}
+        />
       </Box>
     </Box>
   );

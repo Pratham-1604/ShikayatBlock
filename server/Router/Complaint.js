@@ -6,7 +6,7 @@ require("dotenv").config();
 const saveFile = require("./Utils");
 const axios = require("axios");
 
-const isDM = true;
+const isDM = false;
 
 const {
   getAuthorityFromComplaint,

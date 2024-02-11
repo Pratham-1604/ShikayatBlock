@@ -128,6 +128,7 @@ const getComplaintDetail = async (req, res) => {
 };
 
 const updateToAComplaint = async (req, res) => {
+  console.log("here in update");
   try {
     const id = parseInt(req.params.id);
     const {
@@ -201,6 +202,7 @@ const updateToAComplaint = async (req, res) => {
     console.log("done");
     res.status(200).json({ success: true, tx: txHash });
   } catch (error) {
+    console.log("error", error.message);
     res.status(500).send(error.message);
   }
 };

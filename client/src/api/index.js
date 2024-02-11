@@ -137,6 +137,30 @@ class APIRequests {
   static getComplaint = async (id) => {
     return await API.get(`/api/complaint/get_complaints/${id}`);
   };
+
+  // updateComplaint
+  static updateComplaint = async (id, data) => {
+    const fdata = {
+      userId: data.user_id,
+      subject: data.complaint_title,
+      description: data.complaint_description,
+      complaintType: data.complaint_type,
+      ipfs: data.file_url,
+      status: data.remark,
+      // statusType: data.status_type,
+      statusType: data.selectedOption,
+      authorityName: data.reporting_authority,
+      priority: data.priority,
+      // agency_response: data.remark,
+    };
+
+    console.log("fdata", fdata);
+    // return await API.post(`/api/complaint/update_complaint/${id}`, data);
+    return await axios.put(
+      `http://localhost:8080/blockchain/updateToAComplaints/${id}`,
+      fdata
+    );
+  };
 }
 
 export default APIRequests;
