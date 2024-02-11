@@ -18,6 +18,9 @@ import {
 import RightDrawer from "./RightDrawer";
 import APIRequests from "../../api";
 
+import { useDispatch } from "react-redux";
+import { setIsOpen2, setShouldShowSideBar } from "../../reducers/SiteCustom";
+
 const status = {
   warn: {
     icon: <WarningIcon className="h-5 w-5 text-white" aria-hidden="true" />,
@@ -56,6 +59,12 @@ const status = {
 // ];
 
 const AdminInnerComplaint = ({ isUser }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // window.location.reload();
+    dispatch(setIsOpen2(true));
+    dispatch(setShouldShowSideBar(true));
+  }, []);
   const [timeline, setTimeline] = useState([]);
   const [data, setData] = useState(null);
   const [fileUrl, setFileUrl] = useState("#");
@@ -221,7 +230,7 @@ const AdminInnerComplaint = ({ isUser }) => {
                         Authority Name
                       </dt>
                       <dd className="mt-1 text-md text-gray-900">
-                        {data.data.reporting_authority}
+                        {data.data.reporting_agency}
                       </dd>
                     </div>
 
@@ -251,8 +260,8 @@ const AdminInnerComplaint = ({ isUser }) => {
                                 aria-hidden="true"
                               />
                               <span className="ml-2 flex-1 w-0 truncate">
-                                {/* resume_back_end_developer.pdf */}
-                                {"<attached_file>"}
+                                {/* resume_back_ end_developer.pdf */}
+                                {data.data.tx_hash}
                               </span>
                             </div>
                             <div className="ml-4 flex-shrink-0">

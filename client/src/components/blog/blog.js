@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setIsOpen2, setShouldShowSideBar } from "../../reducers/SiteCustom";
 
 const Blog = (props) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // window.location.reload();
+    dispatch(setIsOpen2(true));
+    dispatch(setShouldShowSideBar(true));
+  }, []);
   const points = props.text ? props.text.split("\n") : [];
   return (
-    <div className="bg-white shadow-md flex  flex-col rounded-lg mx-36 my-12"> 
+    <div className="bg-white shadow-md flex  flex-col rounded-lg mx-36 my-12">
       <img
         src={props.img}
         alt=""

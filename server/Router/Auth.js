@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const twilio = require("twilio");
 
 require("dotenv").config();
 
@@ -20,10 +21,10 @@ router.post("/register", async (req, res) => {
   console.log("Received a POST HTTP method");
   // const { name, email, phone, work, password, cpassword } = req.body;
   // const { name, email, work, password } = req.body;
-  const { name, email, user_role, password } = req.body;
+  const { name, email, user_role, password, phone } = req.body;
   // if (!name || !email || !phone || !work || !password || !cpassword) {
   // if (!name || !email || !work || !password) {
-  if (!name || !email || !user_role || !password) {
+  if (!name || !email || !user_role || !password || !phone) {
     return res.status(422).json({ error: "plz fill data properly" });
   }
   try {
@@ -37,7 +38,7 @@ router.post("/register", async (req, res) => {
     else {
       // const user = new User({ name, email, phone, work, password, cpassword });
       // const user = new User({ name, email, work, password });
-      const user = new User({ name, email, user_role, password });
+      const user = new User({ name, email, user_role, password, phone });
       await user.save();
       res.status(201).json({ message: "user registered successfully" });
     }
@@ -75,6 +76,7 @@ router.post("/login", async (req, res) => {
       // );
 
       sendEmail(email);
+      sendMessage(userLogin.phone);
       res.status(200).json({ message: "success" });
     }
   } catch (err) {
@@ -162,4 +164,31 @@ function generateOTP() {
 }
 module.exports = router;
 
+async function sendMessage(phone) {
+  let otp = generateOTP();
+  let user = await User.findOne({ phone });
+  user.otp = otp;
+
+  await user.save();
+  // Schedule a task to set otp to null after 3 minutes
+  setTimeout(async () => {
+    // console.log("setting otp to null")
+    user.otp = null;
+    await user.save();
+    // console.log("done")
+  }, 3 * 60 * 1000); //
+  console.log(phone);
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const client = require("twilio")(accountSid, authToken);
+
+  [phone].forEach((number) => {
+    // console.log(number)
+    client.messages.create({
+      body: `Your verification code is : ${otp}`,
+      from: "+17622499859",
+      to: `+91 ${number}`,
+    });
+  });
+}
 // sign jwt and return []

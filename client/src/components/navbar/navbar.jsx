@@ -12,7 +12,7 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
-  InputRightElement,
+  InputRightElement, 
   Image,
   Stack,
   IconButton,
