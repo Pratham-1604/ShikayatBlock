@@ -66,7 +66,7 @@ const AdminInnerComplaint = ({ isUser }) => {
 
   const handleUpdate = (selectedOption, remark) => {
     setNetComLoading(true);
-    console.log("data", data.complaint_group_id);
+    console.log("data 2", data);
     console.log(selectedOption, remark);
     return APIRequests.updateComplaint(data.complaint_group_id, {
       selectedOption,
@@ -75,7 +75,7 @@ const AdminInnerComplaint = ({ isUser }) => {
       // data: data.data,
     })
       .then((res) => {
-        console.log("res", res);
+        console.log("res 22", res);
         setNetComLoading(false);
         // reload browser
         window.location.reload();
@@ -90,6 +90,7 @@ const AdminInnerComplaint = ({ isUser }) => {
     // setNetComLoading(true);
     APIRequests.getComplaint(complaint_id)
       .then((res) => {
+        console.log("complaint data ", res.data);
         setData(res.data.complaint);
         console.log("com", res.data.gd);
 
@@ -250,7 +251,8 @@ const AdminInnerComplaint = ({ isUser }) => {
                                 aria-hidden="true"
                               />
                               <span className="ml-2 flex-1 w-0 truncate">
-                                resume_back_end_developer.pdf
+                                {/* resume_back_end_developer.pdf */}
+                                {"<attached_file>"}
                               </span>
                             </div>
                             <div className="ml-4 flex-shrink-0">
