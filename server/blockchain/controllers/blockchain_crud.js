@@ -43,16 +43,18 @@ const newComplaint = async (req, res) => {
       description,
       complaintType,
       ipfs,
-      "11-12-2024",
       status,
       statusType,
       authorityName,
-      Number.parseInt(priority)
+      new Date().toISOString(),
+      priority
     );
     const receipt = await tx.wait();
     const txHash = receipt.transactionHash;
     const getId = await contractInstance.getLatestComplaintId();
     const finalId = parseInt(getId);
+    const complaint1 = await contractInstance.getComplaint(finalId);
+
     const obj = {
       event_id: "eg_1",
       event_type: "new_complaint_added",
@@ -61,6 +63,7 @@ const newComplaint = async (req, res) => {
       sender_address: receipt.sender_address,
       complaint_title: subject,
       complaint_id: finalId,
+      complaint_group_id: parseInt(complaint1[1]),
       event_created_date: " 2017-01-01 14:56:00",
       complaint_updated_at: " 2017-01-02 14:56:00",
       complaint_status: " open",
@@ -85,7 +88,9 @@ const newComplaint = async (req, res) => {
         console.error("Error:", error);
       });
     console.log("done");
-    res.status(200).json({ success: true, tx: txHash });
+    res
+      .status(200)
+      .json({ success: true, tx: txHash, complaintGroupId: complaint1[1] });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -101,7 +106,7 @@ const getComplaintDetail = async (req, res) => {
     console.log(complaint);
     const formattedObject = {
       userId: complaint[0],
-      complaintGroupId: complaint[1].hex,
+      complaintGroupId: parseInt(complaint[1]),
       subject: complaint[2],
       description: complaint[3],
       complaintType: complaint[4],
@@ -127,9 +132,9 @@ const updateToAComplaint = async (req, res) => {
       userId,
       subject,
       description,
+      complaintType,
       ipfs,
       status,
-      complaintType,
       statusType,
       authorityName,
       priority,
@@ -144,6 +149,7 @@ const updateToAComplaint = async (req, res) => {
       status,
       statusType,
       authorityName,
+      new Date().toISOString(),
       priority
     );
     const receipt = await tx.wait();
@@ -156,7 +162,7 @@ const updateToAComplaint = async (req, res) => {
       user_id: userId,
       tx_hash: txHash,
       sender_address: receipt.sender_address,
-      complaint_title: title,
+      complaint_title: subject,
       complaint_id: finalId,
       group_complaint_id: id,
       event_created_date: " 2017-01-01 14:56:00",
@@ -197,9 +203,9 @@ const getComplaintByComplaintType = async (req, res) => {
       complaintType
     );
 
-    const hexList = array.map((item) => parseInt(item.hex));
+    // const hexList = array.map((item) => parseInt(item.hex));
 
-    res.status(200).json(hexList);
+    res.status(200).json(tx);
   } catch (err) {
     res.status(500).send("Get Complaint By Complaint Type Error\n", err);
   }
@@ -208,7 +214,7 @@ const getComplaintByComplaintType = async (req, res) => {
 const getComplaintByAuthorityName = async (req, res) => {
   try {
     const { authorityName } = req.body;
-
+    console.log("Authority Name : ", authorityName);
     const tx = await contractInstance.getComplaintsByAuthorityName(
       authorityName
     );
