@@ -167,15 +167,20 @@ const updateToAComplaint = async (req, res) => {
       group_complaint_id: id,
       event_created_date: " 2017-01-01 14:56:00",
       complaint_updated_at: " 2017-01-02 14:56:00",
-      complaint_status: " open",
-      complaint_type: " complaint",
-      complaint_created_by: " user_id",
-      reporting_agency: " police",
+      // complaint_status: " open",
+      complaint_status: status,
+      // complaint_type: " complaint",
+      complaint_type: complaintType,
+      // complaint_created_by: " user_id",
+      complaint_created_by: userId,
+      // reporting_agency: " police",
+      reporting_agency: authorityName,
       complaint_documents: "<url of marksheet or the actual marksheet>",
       agency_documents: "<optional field if agency responds with a document>",
-      complaint_description:
-        " My original copy of marksheet has been lost. I want a new one.",
-      complaint_created_date: " 2017-01-01 14:58:00",
+      // complaint_description:
+      // " My original copy of marksheet has been lost. I want a new one.",
+      complaint_description: description,
+      complaint_created_date: new Date().toISOString(),
       agency_response:
         "We are verifying your details. A department official will contact you shortly.",
     };

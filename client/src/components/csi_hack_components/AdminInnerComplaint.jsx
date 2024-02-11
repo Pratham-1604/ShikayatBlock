@@ -55,7 +55,7 @@ const timeline = [
 ];
 
 const AdminInnerComplaint = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
 
   const { complaint_id } = useParams();
 
@@ -122,82 +122,84 @@ const AdminInnerComplaint = () => {
             </ul>
           </div>
         </div>
-        <div>
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-            <div className=" border-gray-200 px-4 py-5 sm:px-6">
-              <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-                <div className="sm:col-span-1">
-                  <dt className="text-md font-medium text-[#0262AF]">
-                    Name of Complainant
-                  </dt>
-                  <dd className="mt-1 text-md text-gray-900">
-                    {data.user_id ? data.user_id.name : null}
-                  </dd>
-                </div>
-                <div className="sm:col-span-1">
-                  <dt className="text-md font-medium text-[#0262AF]">
-                    Complaint Type
-                  </dt>
-                  <dd className="mt-1 text-md text-gray-900">
-                    {data.data.complaint_type}
-                  </dd>
-                </div>
-                <div className="sm:col-span-1">
-                  <dt className="text-md font-medium text-[#0262AF]">
-                    Authority Name
-                  </dt>
-                  <dd className="mt-1 text-md text-gray-900">
-                    {data.data.reporting_authority}
-                  </dd>
-                </div>
+        {data ? (
+          <div>
+            <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+              <div className=" border-gray-200 px-4 py-5 sm:px-6">
+                <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                  <div className="sm:col-span-1">
+                    <dt className="text-md font-medium text-[#0262AF]">
+                      Name of Complainant
+                    </dt>
+                    <dd className="mt-1 text-md text-gray-900">
+                      {data.user_id ? data.user_id.name : null}
+                    </dd>
+                  </div>
+                  <div className="sm:col-span-1">
+                    <dt className="text-md font-medium text-[#0262AF]">
+                      Complaint Type
+                    </dt>
+                    <dd className="mt-1 text-md text-gray-900">
+                      {data.data.complaint_type}
+                    </dd>
+                  </div>
+                  <div className="sm:col-span-1">
+                    <dt className="text-md font-medium text-[#0262AF]">
+                      Authority Name
+                    </dt>
+                    <dd className="mt-1 text-md text-gray-900">
+                      {data.data.reporting_authority}
+                    </dd>
+                  </div>
 
-                <div className="sm:col-span-2">
-                  <dt className="text-md font-medium text-[#0262AF]">
-                    Complaint Description
-                  </dt>
-                  <dd className="mt-1 text-md text-gray-900">
-                    Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim
-                    incididunt cillum culpa consequat. Excepteur qui ipsum
-                    aliquip consequat sint. Sit id mollit nulla mollit nostrud
-                    in ea officia proident. Irure nostrud pariatur mollit ad
-                    adipisicing reprehenderit deserunt qui eu.
-                  </dd>
-                </div>
-                <div className="sm:col-span-2">
-                  <dt className="text-md font-medium text-[#0262AF]">
-                    Document
-                  </dt>
-                  <dd className="mt-1 text-md text-gray-900">
-                    <ul
-                      role="list"
-                      className="border border-gray-200 rounded-md divide-y divide-gray-200"
-                    >
-                      <li className="pl-3 pr-4 py-3 flex items-center justify-between text-md">
-                        <div className="w-0 flex-1 flex items-center">
-                          <CopyIcon
-                            className="flex-shrink-0 h-5 w-5 text-gray-400"
-                            aria-hidden="true"
-                          />
-                          <span className="ml-2 flex-1 w-0 truncate">
-                            resume_back_end_developer.pdf
-                          </span>
-                        </div>
-                        <div className="ml-4 flex-shrink-0">
-                          <a
-                            href="#"
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
-                          >
-                            View
-                          </a>
-                        </div>
-                      </li>
-                    </ul>
-                  </dd>
-                </div>
-              </dl>
+                  <div className="sm:col-span-2">
+                    <dt className="text-md font-medium text-[#0262AF]">
+                      Complaint Description
+                    </dt>
+                    <dd className="mt-1 text-md text-gray-900">
+                      Fugiat ipsum ipsum deserunt culpa aute sint do nostrud
+                      anim incididunt cillum culpa consequat. Excepteur qui
+                      ipsum aliquip consequat sint. Sit id mollit nulla mollit
+                      nostrud in ea officia proident. Irure nostrud pariatur
+                      mollit ad adipisicing reprehenderit deserunt qui eu.
+                    </dd>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <dt className="text-md font-medium text-[#0262AF]">
+                      Document
+                    </dt>
+                    <dd className="mt-1 text-md text-gray-900">
+                      <ul
+                        role="list"
+                        className="border border-gray-200 rounded-md divide-y divide-gray-200"
+                      >
+                        <li className="pl-3 pr-4 py-3 flex items-center justify-between text-md">
+                          <div className="w-0 flex-1 flex items-center">
+                            <CopyIcon
+                              className="flex-shrink-0 h-5 w-5 text-gray-400"
+                              aria-hidden="true"
+                            />
+                            <span className="ml-2 flex-1 w-0 truncate">
+                              resume_back_end_developer.pdf
+                            </span>
+                          </div>
+                          <div className="ml-4 flex-shrink-0">
+                            <a
+                              href="#"
+                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                            >
+                              View
+                            </a>
+                          </div>
+                        </li>
+                      </ul>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
             </div>
           </div>
-        </div>
+        ) : null}
         <RightDrawer isOpen={isOpen} onClose={onClose} data={timeline} />
       </Box>
     </Box>
