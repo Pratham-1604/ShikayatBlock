@@ -5,6 +5,9 @@ const { connections } = require("../app");
 const { emitMessage } = require("../util");
 const router = express.Router();
 
+const Complaints = require("../models/MComplaintSchema");
+// const { sendMessageDesc } = require("./Auth");
+const { sendMessageDesc } = require("./mutils");
 // my file is in test/jps-ss.png
 const mfile =
   // const io = require("../app");
@@ -14,6 +17,37 @@ const mfile =
 // const User = require("../models/Schema");
 const User = require("../models/UserSchema");
 const Complaint = require("../models/MComplaintSchema");
+
+const sendMessageTo = async (data) => {
+  console.log("send to ", data);
+  const { user_id, event_type, complaint_status, statusType } = data;
+
+  // status is null
+  console.log("sendMessageTo", user_id, event_type, complaint_status);
+  const user = await User.findById(user_id);
+  const phone = user.phone ?? "7977323368";
+  console.log("phone", phone);
+  switch (event_type) {
+    case "new_complaint_added":
+      sendMessageDesc(
+        phone,
+        "Complaint Registered Successfully!",
+        complaint_status,
+        "success"
+      );
+      // send sms
+      break;
+    case "complaint_updated":
+      sendMessageDesc(
+        phone,
+        "You've got an update on your complaint!",
+        complaint_status,
+        statusType
+      );
+      // send sms
+      break;
+  }
+};
 
 const isDM = false;
 
@@ -32,7 +66,7 @@ const handleComplaintCreated = async (req, res) => {
     {
       let data = req.body;
       console.log("data her ", data);
-      if (isDM) {
+      if (isDM && false) {
         data = {
           event_id: "eg_1",
           event_type: "new_complaint_added",
@@ -123,7 +157,7 @@ const handleAddFile = (req, res) => {
   res.send("add_file");
 };
 
-const Complaints = require("../models/MComplaintSchema");
+// const { sendMessageDesc } = require("./Auth");
 
 const handleComplaintUpdate = async (req, res) => {
   const data = req.body;
@@ -176,6 +210,8 @@ router.post("/", async (req, res) => {
       agency_response,
     } = req.body;
 
+    sendMessageTo(req.body);
+
     switch (event_type) {
       case "ingest_form":
         handleIngestForm(req, res);
@@ -206,6 +242,7 @@ router.post("/", async (req, res) => {
       default:
         console.log("default");
         res.send("default");
+        break;
     }
   } catch (error) {
     res.status(500).json({

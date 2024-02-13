@@ -20,7 +20,7 @@ import ImageUpload from "./csi_hack_components/ImageUpload";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@chakra-ui/progress";
 
-const isDM = false;
+const isDM = true;
 
 const ComplaintForm = () => {
   const [netComLoading, setNetComLoading] = useState(false);

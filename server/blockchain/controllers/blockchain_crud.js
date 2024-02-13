@@ -12,7 +12,7 @@ const provider = new providers.JsonRpcProvider(API_URL);
 const signer = new ethers.Wallet(PRIVATE_KEY, provider);
 
 const isDM = false;
-const url = "https://c4f0-49-248-167-18.ngrok-free.app/api";
+const url = "http://localhost:8080/api";
 
 const {
   abi,
@@ -191,7 +191,7 @@ const updateToAComplaint = async (req, res) => {
       priority: priority,
       file_url: ipfs,
     };
-    const url = "https://c4f0-49-248-167-18.ngrok-free.app/api";
+    const url = "http://localhost:8080/api";
     axios
       .post(url + "/webhook", obj)
       .then((response) => {

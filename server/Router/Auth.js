@@ -3,6 +3,8 @@ const twilio = require("twilio");
 
 require("dotenv").config();
 
+const { generateOTP } = require("./mutils");
+
 const express = require("express");
 const router = express.Router();
 
@@ -159,36 +161,9 @@ async function sendEmail(toEmail) {
   console.log(`Message sent: ${info.messageId}`);
 }
 
-function generateOTP() {
-  return crypto.randomInt(100000, 999999); // generate OTP between 100000 and 999999
-}
 module.exports = router;
 
-async function sendMessage(phone) {
-  let otp = generateOTP();
-  let user = await User.findOne({ phone });
-  user.otp = otp;
-
-  await user.save();
-  // Schedule a task to set otp to null after 3 minutes
-  setTimeout(async () => {
-    // console.log("setting otp to null")
-    user.otp = null;
-    await user.save();
-    // console.log("done")
-  }, 3 * 60 * 1000); //
-  console.log(phone);
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const client = require("twilio")(accountSid, authToken);
-
-  [phone].forEach((number) => {
-    // console.log(number)
-    client.messages.create({
-      body: `Your verification code is : ${otp}`,
-      from: "+17622499859",
-      to: `+91 ${number}`,
-    });
-  });
-}
 // sign jwt and return []
+
+// exports.sendMessage = sendMessage;
+// exports.sendMessageDesc = sendMessageDesc;
